@@ -1,106 +1,40 @@
-from os import listdir
+configfile : "config/config.yaml"
+import pandas as pd
 
-sam_dir = "sam_tiny"  # can also get from argv
+
+# samples = pd.read_csv(config["samples"], index_col = "sample", sep ='\t')
+samples = pd.read_csv("samples.tsv",index_col=0, sep =',')
+IDS=[x+"_tiny" for x in list(samples.index)]
+r1 = lambda wildcards:samples.at[wildcards.sample, 'fq1']
+r2 = lambda wildcards:samples.at[wildcards.sample, 'fq2']  # for later
+print(r1)
+
 fastq_dir = "fastq"
-refseq = "refseq/reference.fa"
-ref_prefix = "refseq/reference"
+ref_prefix = config['ref']
 
-IDS = [x.split("_")[0]+"_" + x.split("_")[1] for x in listdir(fastq_dir)]
+include: "rules/bowtie.smk"
+include: "rules/samtools.smk"
 
 rule all:
     input: expand("results/{id}.rpk", id=IDS)
-#     input: expand("sam_tiny/{id}.sam", id=IDS)
-
-rule bowtie2_build:
-    input:
-        ref=ref_prefix+".fa"
-    output:
-        multiext(
-            ref_prefix,
-            ".1.bt2",
-            ".2.bt2",
-            ".3.bt2",
-            ".4.bt2",
-            ".rev.1.bt2",
-            ".rev.2.bt2",
-        ),
-    log:
-        "logs/bowtie2_build/build.log",
-    params:
-        extra="",  # optional parameters
-    threads: 2
-    wrapper:
-        "v1.3.2/bio/bowtie2/build"
-
-
-rule mapreads:
-    input:
-        indexed_ref = multiext(
-                ref_prefix,
-                ".1.bt2",
-                ".2.bt2",
-                ".3.bt2",
-                ".4.bt2",
-                ".rev.1.bt2",
-                ".rev.2.bt2"),
-        read1 = fastq_dir + '/{dana}_1.fastq.gz',
-        read2 = fastq_dir + '/{dana}_2.fastq.gz'
-    output:
-        sam_dir+"/{dana}.sam"
-    shell:
-        "bowtie2 -x {ref_prefix} -1 {input.read1} -2 {input.read2} -S {output}"
-
-
-rule samtobam:
-    input:
-        sam_dir+"/{dana}.sam"
-    output:
-        "bam/{dana}.bam"
-    shell:
-        "samtools view -b {input} > {output}"
-
-rule sort:
-    input:
-        "bam/{dana}.bam"
-    output:
-        "bam_sorted/{dana}.bam.sorted"
-    shell:
-        "samtools sort {input} -o {output}"
-
-rule index:
-    input:
-        "bam_sorted/{dana}.bam.sorted"
-    output:
-        "bam_sorted/{dana}.bam.sorted.bai"
-    shell:
-        "samtools index -b {input}"
-
-rule mapstats:
-    input:
-        sorted="bam_sorted/{dana}.bam.sorted",
-        index="bam_sorted/{dana}.bam.sorted.bai"
-    output:
-        "results/{dana}.txt"
-    shell:
-        "samtools idxstats {input.sorted} > {output}"
 
 rule rpk:
-    input:
-         "results/{dana}.txt"
+    input: "stats/{dana}.stats"
     output:
         "results/{dana}.rpk"
     run:
         with open(input[0]) as file:
-            with open(output[0], 'w') as out:
+            with open(output[0],'w') as out:
                 for line in file:
                     split_line = line.split("\t")
                     length = int(split_line[1])
                     mapped = int(split_line[2])
                     if length != 0:
-                        rpk = (mapped/length)/1000
+                        rpk = (mapped / length) / 1000
                     else:
                         rpk = 0
                     out.write(line + '\t' + str(rpk))
 
 
+    #     input: expand("sam_tiny/{id}.sam", id=IDS)
 

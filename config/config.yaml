@@ -1,0 +1,4 @@
+ref: "refseq/reference"
+samples: "samples.tsv"
+botwieparam1: --local
+bowtieparam2: --ma 3
