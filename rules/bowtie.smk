@@ -3,8 +3,6 @@ configfile : "config/config.yaml"
 
 samples = pd.read_csv(config["samples"],index_col="sample", sep ='\t')
 ref_prefix = config['ref']
-sam_dir = "sam_tiny"
-
 
 rule bowtie2_build:
     input:
