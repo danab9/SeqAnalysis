@@ -1,7 +1,7 @@
-sample,fq1,fq2
-ERR024604,ERR024604_tiny_1.fastq.gz,ERR024604_tiny_2.fastq.gz
-ERR024605,ERR024605_tiny_1.fastq.gz,ERR024605_tiny_2.fastq.gz
-ERR024606,ERR024606_tiny_1.fastq.gz,ERR024606_tiny_2.fastq.gz
-ERR024607,ERR024607_tiny_1.fastq.gz,ERR024607_tiny_2.fastq.gz
-ERR024608,ERR024608_tiny_1.fastq.gz,ERR024608_tiny_2.fastq.gz
-ERR024609,ERR024609_tiny_1.fastq.gz,ERR024609_tiny_2.fastq.gz
+sample	fq1	fq2
+ERR024604	fastq/ERR024604_tiny_1.fastq.gz	fastq/ERR024604_tiny_2.fastq.gz
+ERR024605	fastq/ERR024605_tiny_1.fastq.gz	fastq/ERR024605_tiny_2.fastq.gz
+ERR024606	fastq/ERR024606_tiny_1.fastq.gz	fastq/ERR024606_tiny_2.fastq.gz
+ERR024607	fastq/ERR024607_tiny_1.fastq.gz	fastq/ERR024607_tiny_2.fastq.gz
+ERR024608	fastq/ERR024608_tiny_1.fastq.gz	fastq/ERR024608_tiny_2.fastq.gz
+ERR024609	fastq/ERR024609_tiny_1.fastq.gz	fastq/ERR024609_tiny_2.fastq.gz

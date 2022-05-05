@@ -1,17 +1,14 @@
 import pandas as pd
 configfile : "config/config.yaml"
 
-samples = pd.read_csv("samples.tsv",index_col=0, sep =',')
-IDS=[x+"_tiny" for x in list(samples.index)]
-# r1 = lambda wildcards:samples.at[wildcards.sample, 'fq1']
-fastq_dir = "fastq"
+samples = pd.read_csv(config["samples"],index_col="sample", sep ='\t')
 ref_prefix = config['ref']
 sam_dir = "sam_tiny"
 
 
 rule bowtie2_build:
     input:
-        ref=ref_prefix+".fa"
+        ref_prefix+".fa"
     output:
         multiext(
             ref_prefix,
@@ -23,12 +20,12 @@ rule bowtie2_build:
             ".rev.2.bt2",
         ),
     log:
-        "logs/bowtie2_build/build.log",
-    params:
-        extra="",  # optional parameters
+        "logs/bowtie2_build/build.log"
     threads: 4
-    wrapper:
-        "v1.3.2/bio/bowtie2/build"
+    conda:
+        "envs/env.yaml"
+    shell:
+        "bowtie2-build {input} {ref_prefix} --threads {threads} &> {log}"
 
 rule mapreads:
     input:
@@ -40,10 +37,15 @@ rule mapreads:
                 ".4.bt2",
                 ".rev.1.bt2",
                 ".rev.2.bt2"),
-        read1 = fastq_dir + '/{dana}_1.fastq.gz',
-        read2 = fastq_dir + '/{dana}_2.fastq.gz'
+        r1 = lambda wildcards:samples.at[wildcards.sample, 'fq1'],
+        r2 = lambda wildcards:samples.at[wildcards.sample, 'fq2']
     output:
-        sam_dir+"/{dana}.sam"
+        "sam/{sample}.sam"
+    log:
+        "logs/bowtie2/{sample}_aligment.log"
     threads: 4
+    conda:
+        "envs/env.yaml"
     shell:
-        "bowtie2 -x {ref_prefix} -1 {input.read1} -2 {input.read2} -S {output}"
+        "bowtie2 -x {ref_prefix} -1 {input.r1} -2 {input.r2} -S {output} --threads {threads} &> {log}"
+

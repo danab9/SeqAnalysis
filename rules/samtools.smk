@@ -1,55 +1,50 @@
-import pandas as pd
-sam_dir = "sam_tiny"
 configfile : "config/config.yaml"
-samples = pd.read_csv("samples.tsv",index_col=0, sep =',')
-IDS=[x+"_tiny" for x in list(samples.index)]
-# r1 = lambda wildcards:samples.at[wildcards.sample, 'fq1']
-fastq_dir = "fastq"
-ref_prefix = config['ref']
 
 rule samtobam:
     input:
-        sam_dir+"/{dana}.sam"
+        "sam/{sample}.sam"
     output:
-        "bam/{dana}.bam"
+        "bam/{sample}.bam"
     conda:
        "envs/env.yaml"
     threads: 4
+    log:
+        "logs/samtools/{sample}_view.log"
     shell:
-      "env samtools view -b {input} > {output}"
+      "samtools view -b {input} --threads {threads} > {output} 2> {log}"
 
-# rule samtobam:
-#     input:
-#         sam_dir+"/{dana}.sam"
-#     output:
-#         "bam/{dana}.bam"
-#     shell:
-#         "samtools view -b {input} > {output}"
 
 rule sort:
     input:
-        "bam/{dana}.bam"
+        "bam/{sample}.bam"
     output:
-        "bam_sorted/{dana}.bam.sorted"
+        "bam_sorted/{sample}_sorted.bam"
+    log:
+        "logs/samtools/{sample}_sort.log"
     threads: 4
+    conda:
+        "envs/env.yaml"
     shell:
-        "samtools sort {input} -o {output}"
+        "samtools sort {input} -o {output} --threads {threads} &> {log}"
 
 rule index:
     input:
-        "bam_sorted/{dana}.bam.sorted"
+        "bam_sorted/{sample}_sorted.bam"
     output:
-        "bam_sorted/{dana}.bam.sorted.bai"
-    threads: 4
+        "bam_sorted/{sample}_sorted.bam.bai"
+    conda:
+        "envs/env.yaml"
     shell:
         "samtools index -b {input}"
 
 rule mapstats:
     input:
-        sorted="bam_sorted/{dana}.bam.sorted",
-        index="bam_sorted/{dana}.bam.sorted.bai"
+        sorted="bam_sorted/{sample}_sorted.bam",
+        index="bam_sorted/{sample}_sorted.bam.bai"
     output:
-        "stats/{dana}.stats"
+        "stats/{sample}.stats"
     threads: 4
+    conda:
+        "envs/env.yaml"
     shell:
-        "samtools idxstats {input.sorted} > {output}"
+        "samtools idxstats {input.sorted} --threads {threads} > {output}"
