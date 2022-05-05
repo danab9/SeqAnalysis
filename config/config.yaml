@@ -2,3 +2,4 @@ ref: "refseq/reference"
 samples: "samples.tsv"
 botwieparam1: --local
 bowtieparam2: --ma 3
+env: "../envs/env.yaml"
