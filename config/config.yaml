@@ -1,9 +1,7 @@
-ref: "refseq/reference"
+ref: "reference/NC_045512.2"
 samples: "samples.tsv"
 botwieparam1: "--local"
 bowtieparam2: "--ma 3"
-env: "../envs/env.yaml"
-multiqc_env: "../envs/multiqc.yaml"
 multiqcparam: "-f"
 skip_trimming: 'False'
 skip_fastQC: 'False'

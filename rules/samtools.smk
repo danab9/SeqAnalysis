@@ -1,4 +1,5 @@
 configfile : "config/config.yaml"
+env = "../envs/env.yaml"
 
 rule samtobam:
     input:
@@ -6,7 +7,7 @@ rule samtobam:
     output:
         "bam/{sample}.bam"
     conda:
-       config["env"]
+       env
     threads: 4
     log:
         "logs/samtools/{sample}_view.log"
@@ -23,7 +24,7 @@ rule sort:
         "logs/samtools/{sample}_sort.log"
     threads: 4
     conda:
-        config["env"]
+        env
     shell:
         "samtools sort {input} -o {output} --threads {threads} &> {log}"
 
@@ -33,7 +34,7 @@ rule index:
     output:
         "bam_sorted/{sample}_sorted.bam.bai"
     conda:
-        config["env"]
+        env
     shell:
         "samtools index -b {input}"
 
@@ -45,6 +46,6 @@ rule mapstats:
         "stats/{sample}.stats"
     threads: 4
     conda:
-        config["env"]
+        env
     shell:
         "samtools idxstats {input.sorted} --threads {threads} > {output}"

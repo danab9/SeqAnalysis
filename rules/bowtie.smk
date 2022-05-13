@@ -3,6 +3,7 @@ configfile : "config/config.yaml"
 
 samples = pd.read_csv(config["samples"],index_col="sample", sep ='\t')
 ref_prefix = config['ref']
+env = "../envs/env.yaml"
 
 rule bowtie2_build:
     input:
@@ -21,7 +22,7 @@ rule bowtie2_build:
         "logs/bowtie2_build/build.log"
     threads: 4
     conda:
-        config["env"]
+        env
     shell:
         "bowtie2-build {input} {ref_prefix} --threads {threads} &> {log}"
 
@@ -43,7 +44,7 @@ rule mapreads:
         "logs/bowtie2/{sample}_aligment.log"
     threads: 4
     conda:
-        config["env"]
+        env
     shell:
         "bowtie2 -x {ref_prefix} -1 {input.r1} -2 {input.r2} -S {output} --threads {threads} &> {log}"
 
