@@ -7,6 +7,7 @@ r1 = lambda wildcards:samples.at[wildcards.sample, 'fq1']
 r2 = lambda wildcards:samples.at[wildcards.sample, 'fq2']
 all_fq = [ID + "_1" for ID in IDS] + [ID + "_2" for ID in IDS]  # todo!
 env_qc = "../envs/multiqc.yaml"
+env = "../envs/env.yaml"
 
 rule temp:
     input:
@@ -22,7 +23,7 @@ rule fastqc:
         html="qc/{folder}/{sample}_fastqc.html",
         zip="qc/{folder}/{sample}_fastqc.zip"
     conda:
-        config["env"]
+        env
     log:
         "logs/qc/{folder}/{sample}.log"
     shell:
@@ -38,7 +39,7 @@ rule trimmomatic:
         r2_p= "trimmed/{sample}_2_P.fastq.gz", r2_u = "trimmed/{sample}_2_UP.fastq.gz"
     # TODO: add params (through config + params)
     conda:
-        config["env"]
+        env
     log:
         "logs/trimmomatic/{sample}.log"
     shell:
@@ -52,7 +53,7 @@ rule qualimap:
         dir=directory("qc/qualimap/{sample}"),
         file=("qc/qualimap/{sample}/qualimapReport.html"),
     conda:
-        config["env"]
+        env
     log:
         "logs/qualimap/{sample}.log"
     shell:
@@ -68,7 +69,7 @@ rule multiqc:
     output:
         "qc/multiqc_report.html"
     conda:
-        config["multiqc_env"]
+        env_qc
     log:
         "logs/multiqc/multiqc.log"
     params:

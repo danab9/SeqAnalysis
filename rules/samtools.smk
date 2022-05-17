@@ -49,3 +49,14 @@ rule mapstats:
         env
     shell:
         "samtools idxstats {input.sorted} --threads {threads} > {output}"
+
+rule consenus:
+    input:
+        bam="bam_sorted/{sample}_sorted.bam",
+    output:
+        "fasta/{sample}.fa"
+    threads: 4
+    conda:
+        env
+    shell:
+        "samtools mpileup -aa -A -d 0 -Q 0 {input.bam} | ivar consensus -p fasta/{wildcards.sample} -q 20" # todo, log files

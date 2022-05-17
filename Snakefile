@@ -9,7 +9,9 @@ include: "rules/samtools.smk"
 include: "rules/qc.smk"
 
 rule all:
-    input: expand("stats/{id}.stats_aug", id=IDS)
+    input:
+        expand("fasta/{id}.fa", id=IDS)
+        #expand("stats/{id}.stats_aug", id=IDS)
         # expand("qc/fastq/{sample}_fastqc.html",sample=all_fq),
         # expand("qc/trimmed/{sample}_{number}_{paired}_fastqc.html",sample=IDS,number=['1', '2'],paired=['P','UP']),
         # expand("qc/qualimap/{sample}/qualimapReport.html", sample=IDS),
