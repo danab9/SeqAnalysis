@@ -40,11 +40,14 @@ rule mapreads:
         r2 = lambda wildcards:samples.at[wildcards.sample, 'fq2']
     output:
         "sam/{sample}.sam"
+    params:
+        local = config["bowtie2"]["local"], #todo: test if this works.
+        ma = config["bowtie2"]["ma"]
     log:
         "logs/bowtie2/{sample}_aligment.log"
     threads: 4
     conda:
         env
     shell:
-        "bowtie2 -x {ref_prefix} -1 {input.r1} -2 {input.r2} -S {output} --threads {threads} &> {log}"
+        "bowtie2 -x {ref_prefix} -1 {input.r1} -2 {input.r2} -S {output}  --threads {threads} &> {log}" #--ma {params.ma} >> It seems like we did not obtain a good fasta...
 

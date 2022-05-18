@@ -7,11 +7,14 @@ IDS=[s for s in list(samples.index)]
 include: "rules/bowtie.smk"
 include: "rules/samtools.smk"
 include: "rules/qc.smk"
+include: "rules/msa.smk"
 
 rule all:
     input:
-        expand("fasta/{id}.fa", id=IDS)
-        #expand("stats/{id}.stats_aug", id=IDS)
+        "msa/alignment.fasta",
+        "tree/tree.nwk"
+        # expand("fasta/{id}.fa", id=IDS),
+        # expand("sam/{id}.sam", id=IDS),
         # expand("qc/fastq/{sample}_fastqc.html",sample=all_fq),
         # expand("qc/trimmed/{sample}_{number}_{paired}_fastqc.html",sample=IDS,number=['1', '2'],paired=['P','UP']),
         # expand("qc/qualimap/{sample}/qualimapReport.html", sample=IDS),

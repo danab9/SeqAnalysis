@@ -56,7 +56,11 @@ rule consenus:
     output:
         "fasta/{sample}.fa"
     threads: 4
+    log:
+        "logs/consenus/{sample}_consensus.log"
     conda:
         env
+    params:
+        q = config["consenus"]["q"]
     shell:
-        "samtools mpileup -aa -A -d 0 -Q 0 {input.bam} | ivar consensus -p fasta/{wildcards.sample} -q 20" # todo, log files
+        "samtools mpileup -aa -A -d 0 -Q 0 {input.bam} &> {log} | ivar consensus -p fasta/{wildcards.sample} -q {params.q} &> {log}"
