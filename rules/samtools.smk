@@ -1,5 +1,6 @@
 configfile : "config/config.yaml"
 env = "../envs/env.yaml"
+samvar_env = "../envs/samvar.yaml"
 
 rule samtobam:
     input:
@@ -50,17 +51,19 @@ rule mapstats:
     shell:
         "samtools idxstats {input.sorted} --threads {threads} > {output}"
 
+
 rule consenus:
     input:
         bam="bam_sorted/{sample}_sorted.bam",
+        index="bam_sorted/{sample}_sorted.bam.bai"
     output:
         "fasta/{sample}.fa"
     threads: 4
     log:
         "logs/consenus/{sample}_consensus.log"
     conda:
-        env
+        samvar_env
     params:
         q = config["consenus"]["q"]
     shell:
-        "samtools mpileup -aa -A -d 0 -Q 0 {input.bam} &> {log} | ivar consensus -p fasta/{wildcards.sample} -q {params.q} &> {log}"
+        "samtools mpileup -aa -A -d 0 -Q 0 {input.bam} | ivar consensus -p fasta/{wildcards.sample} &> {log}"

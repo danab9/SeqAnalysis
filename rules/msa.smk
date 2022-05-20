@@ -67,7 +67,7 @@ rule variability:
     params:
         l = config['variability']['l']
     output:
-        variability =
+        variability = ,
         image = #if image.
     log:
         "logs/script/script.log"
