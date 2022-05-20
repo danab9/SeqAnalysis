@@ -1,0 +1,8 @@
+name: samvar
+channels:
+  - defaults
+  - bioconda
+dependencies:
+  - ivar
+  - samtools
+prefix: /home/mi/danab93/miniconda3/envs/samvar
