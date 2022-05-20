@@ -16,12 +16,6 @@ rule all:
         "variability/variability.txt",
         "variability/variability.png",
         "tree/tree.png"
-        # expand("fasta/{id}.fa", id=IDS),
-        # expand("sam/{id}.sam", id=IDS),
-        # expand("qc/fastq/{sample}_fastqc.html",sample=all_fq),
-        # expand("qc/trimmed/{sample}_{number}_{paired}_fastqc.html",sample=IDS,number=['1', '2'],paired=['P','UP']),
-        # expand("qc/qualimap/{sample}/qualimapReport.html", sample=IDS),
-
 
 
 rule rpk:
