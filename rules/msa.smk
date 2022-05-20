@@ -8,7 +8,7 @@ env = "../envs/env.yaml"
 rule msa:
     input:
         sequences = expand("fasta/{sample}.fa", sample=IDS),
-        directory = directory("fasta")
+        #directory = directory("fasta")
     output:
         alignment = "msa/alignment.fasta"
     log:
@@ -59,3 +59,21 @@ rule tree:
 #         t = Tree(s,format=8)  # read Newick format 8
 #         print(t)  # print tree as txt
 #         t.render('cell_genealogy.png')
+
+
+rule variability:
+    input:
+        alignment="msa/alignment.fasta"
+    params:
+        l = config['variability']['l']
+    output:
+        variability =
+        image = #if image.
+    log:
+        "logs/script/script.log"
+    threads: 4
+    conda:
+        env
+    script:
+        "scripts/variability.py"
+    #{input.alignment} {output.variability} {params.l} &> {log}"  #Question: is python3 ok?
