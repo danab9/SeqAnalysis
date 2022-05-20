@@ -37,12 +37,16 @@ rule tree:
     shell:
         "augur tree --method {params.method} --alignment {input.alignment} --output {output.tree} &> {log}"     #augur tree --method iqtree --alignment msa/alignment.fasta --output tree/tree.nwk
 #
-# rule treevisual:
-#     input:
-#         tree = "tree/tree_raw.nwk"
-#     output:
-#         png = 'tree.png'
-#     run:
+rule treevisual:
+    input:
+        tree = "tree/tree.nwk"
+    output:
+        png = 'tree/tree.png'
+    conda:
+        env
+    script:
+        "../scripts/treevisual.py"
+
 #
 #     with open('cell_division_newick_cells_0.txt','r') as file:
 #         s = file.read()  # read from file
@@ -67,13 +71,13 @@ rule variability:
     params:
         l = config['variability']['l']
     output:
-        variability = ,
-        image = #if image.
+        variability = "variability/variability.txt",
+        image = "variability/variability.png" #if image.
     log:
         "logs/script/script.log"
     threads: 4
     conda:
         env
     script:
-        "scripts/variability.py"
+        "../scripts/variability.py"
     #{input.alignment} {output.variability} {params.l} &> {log}"  #Question: is python3 ok?

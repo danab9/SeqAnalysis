@@ -12,3 +12,5 @@ consenus:
 skip_trimming: 'False'
 skip_fastQC: 'False'
 skip_qualimap: 'False'
+variability:
+  l: 3

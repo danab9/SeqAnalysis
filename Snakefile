@@ -12,7 +12,10 @@ include: "rules/msa.smk"
 rule all:
     input:
         "msa/alignment.fasta",
-        "tree/tree.nwk"
+        "tree/tree.nwk",
+        "variability/variability.txt",
+        "variability/variability.png",
+        "tree/tree.png"
         # expand("fasta/{id}.fa", id=IDS),
         # expand("sam/{id}.sam", id=IDS),
         # expand("qc/fastq/{sample}_fastqc.html",sample=all_fq),
