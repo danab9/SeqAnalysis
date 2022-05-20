@@ -3,7 +3,7 @@
 #  - xopen=1.0.1 #dependency required by augur
 #  - bcdoc # required by awscli-1.8.3-py27_0
 
-#Notes:
+NOTES:
 #conda install -c bioconda mafft
 #python3 -m pip install nextstrain-augur
 #python3 -m augur align --sequences fasta/combined.fa fasta/combined.fa #2 files
@@ -13,3 +13,5 @@ conda install -c bioconda iqtree
 #python3 -m pip install ete3
 or conda create -n ete3 python=3
 
+conda install -c bioconda ivar
+samtools mpileup -aa -A -d 0 -Q 0 bam_sorted/ERR4082860_sorted.bam | ivar consensus -p fasta/ERR4082860 -q 20
