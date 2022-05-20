@@ -17,7 +17,7 @@ rule msa:
     conda:
         env
     shell:
-        "python3 -m augur align --sequences {input.sequences} -o {output.alignment} &> {log}"
+        "python3 -m augur align --sequences {input.sequences} -o {output.alignment} &> {log}"  #Question: is python3 ok?
         #"augur align --sequences {input.directory} -o {output.alignment} &> {log}"
 
 
