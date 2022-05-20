@@ -14,15 +14,9 @@ variability_dir = snakemake.output["variability"]
 alignment_mat = []
 with open(msa) as handle:
     for record in SeqIO.parse(handle, "fasta"):
-        print(record.id)
         alignment_mat.append([c for c in str(record.seq)]) #vstack
 
 alignment_mat = np.array(alignment_mat)
-
-# data = data.sort_values("id")
-# data.to_csv(snakemake.output[0], sep="\t")
-#
-#
 
 
 def shannon_entropy(list_input):
