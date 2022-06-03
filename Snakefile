@@ -8,14 +8,16 @@ include: "rules/bowtie.smk"
 include: "rules/samtools.smk"
 include: "rules/qc.smk"
 include: "rules/msa.smk"
+include: "rules/denovo.smk"
 
 rule all:
     input:
-        "msa/alignment.fasta",
-        "tree/tree.nwk",
-        "variability/variability.txt",
-        "variability/variability.png",
-        "tree/tree.png"
+        #"msa/alignment.fasta",
+        #"tree/tree.nwk",
+        #"variability/variability.txt",
+        #"variability/variability.png",
+        #"tree/tree.png",
+        expand("denovo_assembly/{sample}/contigs.fasta", sample=IDS)
 
 
 rule rpk:
