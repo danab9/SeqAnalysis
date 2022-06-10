@@ -1,8 +1,8 @@
 name: multiqc
 channels:
+  - defaults
   - bioconda
   - conda-forge
-  - defaults
 dependencies:
   - multiqc=1.12=pyhdfd78af_0
 #  - brotlipy=0.7.0=py37h69ee0a8_1004

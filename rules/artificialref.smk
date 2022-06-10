@@ -4,19 +4,54 @@ blast_env = "../envs/blast.yaml"
 
 samples = pd.read_csv(config["samples"],index_col="sample", sep ='\t')
 
+rule makeblastdb:
+    input:
+        "reference/references.fa"
+    output:
+        multiext(
+            'reference/references.fa',
+            ".ndb",
+            ".nhr",
+            ".nin",
+            ".nog",
+            ".nos",
+            ".not",
+            ".nsq",
+            ".ntf",
+            "nto"
+        )
+    conda:
+        blast_env
+    log:
+        "logs/blastdb.log"
+    shell:
+        "makeblastdb -in {input} -dbtype nucl -parse_seqids -logfile {log}"
+
+
 rule mapcontigs:
     input:
-        references = "reference.fa", #fasta file with multiple user provided references
-        contigs = "denovo_assembly/{sample}/contigs.fasta"
+        contigs = "denovo_assembly/{sample}/contigs.fasta",
+        indexed_ref = multiext(
+            'reference/references.fa',
+            ".ndb",
+            ".nhr",
+            ".nin",
+            ".nog",
+            ".nos",
+            ".not",
+            ".nsq",
+            ".ntf",
+            "nto"
+        )
     output:
-        best_reference = "best_reference_{sample}.fa"
+        best_reference = "blastcontigs/{sample}.out"
     log:
-        "logs/mapcontigs.log"
+        "logs/blastcontigs/{sample}.log"
     threads: 4
     conda:
         blast_env
     shell:
-        #BLAST
+        "blastn -i {input.contigs} 2>{log}"
 
 
 import pandas as pd
@@ -32,12 +67,12 @@ rule readblast:
     output:
         best_reference = "best_reference_{sample}.fa"
     log:
-        "logs/mapcontigs.log"
+        "logs/blastreads/{sample}.log"
     threads: 4
     conda:
         env
     shell:
-        #
+        "echo hello 2> {log}"
 
 rule artificialreference:
     input: # contigs for the sample, and best reference for the sample
@@ -46,7 +81,7 @@ rule artificialreference:
     output:
         artificial_reference = "artificial_reference_{sample}.sam"
     log:
-        "logs/artificialreference.log"
+        "logs/artificialreference/{sample}.log"
     threads: 4
     conda:
         env
@@ -61,7 +96,7 @@ rule artificialrefconcensus:
     output:
         consensus = "artificial_reference_{sample}.fa"
     log:
-        "logs/bcsf.log"
+        "logs/bcsf/{sample}.log"
     threads: 4
     conda:
         env

@@ -4,4 +4,4 @@ channels:
   - bioconda
 dependencies:
   - blast
-prefix: /home/mi/danab93/miniconda3/envs/blast
+prefix: /storage/mi/danab93/miniconda3/envs/blast

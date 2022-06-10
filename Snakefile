@@ -9,6 +9,7 @@ include: "rules/samtools.smk"
 include: "rules/qc.smk"
 include: "rules/msa.smk"
 include: "rules/denovo.smk"
+include: "rules/artificialref.smk"
 
 rule all:
     input:
@@ -17,7 +18,19 @@ rule all:
         #"variability/variability.txt",
         #"variability/variability.png",
         #"tree/tree.png",
-        expand("denovo_assembly/{sample}/contigs.fasta", sample=IDS)
+        expand("denovo_assembly/{sample}/contigs.fasta", sample=IDS),
+        multiext(
+            'reference/references.fa',
+            ".ndb",
+            ".nhr",
+            ".nin",
+            ".nog",
+            ".nos",
+            ".not",
+            ".nsq",
+            ".ntf",
+            "nto"
+        )
 
 
 rule rpk:
