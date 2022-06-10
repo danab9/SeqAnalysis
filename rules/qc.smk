@@ -6,8 +6,7 @@ IDS=[s for s in list(samples.index)]
 r1 = lambda wildcards:samples.at[wildcards.sample, 'fq1']
 r2 = lambda wildcards:samples.at[wildcards.sample, 'fq2']
 all_fq = [ID + "_1" for ID in IDS] + [ID + "_2" for ID in IDS]  # todo!
-env_qc = "../envs/multiqc.yaml"
-env = "../envs/env.yaml"
+
 
 rule temp:
     input:
@@ -23,7 +22,7 @@ rule fastqc:
         html="qc/{folder}/{sample}_fastqc.html",
         zip="qc/{folder}/{sample}_fastqc.zip"
     conda:
-        env
+        "../envs/env.yaml"
     log:
         "logs/qc/{folder}/{sample}.log"
     shell:
@@ -37,13 +36,15 @@ rule trimmomatic:
     output:
         r1_p= "trimmed/{sample}_1_P.fastq.gz", r1_u = "trimmed/{sample}_1_UP.fastq.gz",
         r2_p= "trimmed/{sample}_2_P.fastq.gz", r2_u = "trimmed/{sample}_2_UP.fastq.gz"
-    # TODO: add params (through config + params)
+    params:
+        trailing = config["trimmomatic"]['trailing']
     conda:
-        env
+        "../envs/env.yaml"
     log:
         "logs/trimmomatic/{sample}.log"
+    threads: 4
     shell:
-        "trimmomatic PE {input.r1} {input.r2} {output.r1_p} {output.r1_u} {output.r2_p} {output.r2_u} TRAILING:20 &> {log}"
+        "trimmomatic PE {input.r1} {input.r2} {output.r1_p} {output.r1_u} {output.r2_p} {output.r2_u} TRAILING:20 --threads {threads}&> {log}"
 
 
 rule qualimap:
@@ -53,11 +54,12 @@ rule qualimap:
         dir=directory("qc/qualimap/{sample}"),
         file=("qc/qualimap/{sample}/qualimapReport.html"),
     conda:
-        env
+        "../envs/env.yaml"
     log:
         "logs/qualimap/{sample}.log"
+    threads: 4
     shell:
-        "qualimap bamqc -bam {input} -outdir {output.dir} &> {log}"
+        "qualimap bamqc -bam {input} -outdir {output.dir} --threads {threads} &> {log}"
 
 rule multiqc:
     input:
@@ -69,9 +71,10 @@ rule multiqc:
     output:
         "qc/multiqc_report.html"
     conda:
-        env_qc
+        "../envs/multiqc.yaml"
     log:
         "logs/multiqc/multiqc.log"
+    threads: 1
     params:
         config["multiqcparam"]  # for example: -f parameter to ensure existing multiqc report is override.
     shell:

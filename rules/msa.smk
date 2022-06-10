@@ -1,9 +1,6 @@
 import pandas as pd
-#from ete3 import Tree
 configfile : "config/config.yaml"
 samples = pd.read_csv(config["samples"],index_col="sample", sep ='\t')
-ref_prefix = config['ref']
-env = "../envs/env.yaml"
 
 rule msa:
     input:
@@ -15,7 +12,7 @@ rule msa:
         "logs/msa/msa.log"
     threads: 4
     conda:
-        env
+        "../envs/env.yaml"
     shell:
         "python3 -m augur align --sequences {input.sequences} -o {output.alignment} &> {log}"  #Question: is python3 ok?
         #"augur align --sequences {input.directory} -o {output.alignment} &> {log}"
@@ -33,17 +30,17 @@ rule tree:
     params:
         method = config["tree"]["method"]
     conda:
-        env
+        "../envs/env.yaml"
     shell:
         "augur tree --method {params.method} --alignment {input.alignment} --output {output.tree} &> {log}"     #augur tree --method iqtree --alignment msa/alignment.fasta --output tree/tree.nwk
-#
+
 rule treevisual:
     input:
         tree = "tree/tree.nwk"
     output:
         png = 'tree/tree.png'
     conda:
-        env
+        "../envs/env.yaml"
     script:
         "../scripts/treevisual.py"
 
@@ -77,7 +74,7 @@ rule variability:
         "logs/script/script.log"
     threads: 4
     conda:
-        env
+        "../envs/env.yaml"
     script:
         "../scripts/variability.py"
     #{input.alignment} {output.variability} {params.l} &> {log}"  #Question: is python3 ok?

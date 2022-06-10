@@ -1,6 +1,4 @@
 configfile : "config/config.yaml"
-env = "../envs/env.yaml"
-samvar_env = "../envs/samvar.yaml"
 
 rule samtobam:
     input:
@@ -8,7 +6,7 @@ rule samtobam:
     output:
         "bam/{sample}.bam"
     conda:
-       env
+       "../envs/env.yaml"
     threads: 4
     log:
         "logs/samtools/{sample}_view.log"
@@ -25,7 +23,7 @@ rule sort:
         "logs/samtools/{sample}_sort.log"
     threads: 4
     conda:
-        env
+        "../envs/env.yaml"
     shell:
         "samtools sort {input} -o {output} --threads {threads} &> {log}"
 
@@ -35,7 +33,7 @@ rule index:
     output:
         "bam_sorted/{sample}_sorted.bam.bai"
     conda:
-        env
+        "../envs/env.yaml"
     shell:
         "samtools index -b {input}"
 
@@ -47,7 +45,7 @@ rule mapstats:
         "stats/{sample}.stats"
     threads: 4
     conda:
-        env
+        "../envs/env.yaml"
     shell:
         "samtools idxstats {input.sorted} --threads {threads} > {output}"
 
@@ -58,11 +56,11 @@ rule consenus:
         index="bam_sorted/{sample}_sorted.bam.bai"
     output:
         "fasta/{sample}.fa"
-    threads: 4
+    threads: 1
     log:
         "logs/consenus/{sample}_consensus.log"
     conda:
-        samvar_env
+        "../envs/samvar.yaml"
     params:
         q = config["consenus"]["q"]
     shell:

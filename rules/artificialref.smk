@@ -1,6 +1,5 @@
 import pandas as pd
 configfile : "config/config.yaml"
-blast_env = "../envs/blast.yaml"
 
 samples = pd.read_csv(config["samples"],index_col="sample", sep ='\t')
 
@@ -21,7 +20,7 @@ rule makeblastdb:
             "nto"
         )
     conda:
-        blast_env
+        "../envs/blast.yaml" #because we should not use variables for environments
     log:
         "logs/blastdb.log"
     shell:
@@ -49,20 +48,15 @@ rule mapcontigs:
         "logs/blastcontigs/{sample}.log"
     threads: 4
     conda:
-        blast_env
+        "../envs/blast.yaml"
     shell:
         "blastn -i {input.contigs} 2>{log}"
 
 
-import pandas as pd
-configfile : "config/config.yaml"
-samples = pd.read_csv(config["samples"],index_col="sample", sep ='\t')
-ref_prefix = config['ref']
-env = "../envs/artificialref.yaml"
 
 rule readblast:
     input:
-        references = "reference.fa", #fasta file with multiple user provided references
+        references = config["references"], #fasta file with multiple user provided references, not only prefix.
         contigs = "denovo_assembly/{sample}/contigs.fasta"
     output:
         best_reference = "best_reference_{sample}.fa"
@@ -70,7 +64,7 @@ rule readblast:
         "logs/blastreads/{sample}.log"
     threads: 4
     conda:
-        env
+        "../envs/artificialref.yaml"
     shell:
         "echo hello 2> {log}"
 
@@ -84,7 +78,7 @@ rule artificialreference:
         "logs/artificialreference/{sample}.log"
     threads: 4
     conda:
-        env
+        "../envs/artificialref.yaml"
     shell:
         "minimap2 -a {input.best_reference} {input.contigs} > {output.artificial_reference} 2> {log}"
         # minimap https://github.com/lh3/minimap2
@@ -99,7 +93,7 @@ rule artificialrefconcensus:
         "logs/bcsf/{sample}.log"
     threads: 4
     conda:
-        env
+        "../envs/artificialref.yaml"
     shell:
         "bcftools mpileup -B -Ou -f {input.best_reference} {input.sam} | bcftools call -mv -M -Oz -o calls.vcf.gz 2> {log}"
         "bcftools index calls.vcf.gz 2> {log}"
