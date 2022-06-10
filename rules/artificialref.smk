@@ -50,7 +50,7 @@ rule best_reference:
     input:
         table="blast/contigs/{sample}.tsv", reference="reference/reference.fa"
     output:
-        "best_references/{sample}.tsv"
+        "best_references/{sample}.fasta"
     run:
         import pandas as pd
         from Bio import SeqIO
