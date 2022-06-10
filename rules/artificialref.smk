@@ -54,8 +54,10 @@ rule best_reference:
         "best_references/{sample}.fasta"
     conda:
         "../envs/artificialref.yaml"
+    log:
+        "logs/best_reference/{sample}.log"
     shell:
-        "python scripts/best_reference.py {input.table} {input.reference} {output}"
+        "python scripts/best_reference.py {input.table} {input.reference} {output} 2> {log}"
 
 
 
