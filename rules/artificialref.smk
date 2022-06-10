@@ -28,7 +28,7 @@ rule mapcontigs:
     input:
         contigs = "denovo_assembly/{sample}/contigs.fasta",
         indexed_ref = multiext(
-            'reference/references.fa',
+            'reference/reference.fa',
             ".nhr",
             ".nin",
             ".nog",
@@ -44,11 +44,11 @@ rule mapcontigs:
     conda:
         "../envs/blast.yaml"
     shell:
-        "blastn -query {input.contigs} -db reference/references.fa -outfmt 6 -out {output} -num_threads {threads} 2>{log}"
+        "blastn -query {input.contigs} -db reference/reference.fa -outfmt 6 -out {output} -num_threads {threads} 2>{log}"
 
 rule best_reference:
     input:
-        table="blast/contigs/{sample}.tsv", reference="reference/references.fa"
+        table="blast/contigs/{sample}.tsv", reference="reference/reference.fa"
     output:
         "best_references/{sample}.tsv"
     run:
@@ -59,7 +59,7 @@ rule best_reference:
         table = table[table[0].str.contains('NODE_1')] # get first contig only
         table = table.sort_values([10,2], ascending=[True,False])
         best_ref = table.iloc[0,1]
-        with open(input[1]) as ref, open(output,'w') as out:
+        with open(input[1]) as ref, open(output[0],'w') as out:
             record_dict = SeqIO.to_dict(SeqIO.parse(input[1], "fasta"))
             for key in record_dict:
                 if best_ref in key:

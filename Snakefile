@@ -18,8 +18,7 @@ rule all:
         #"variability/variability.txt",
         #"variability/variability.png",
         #"tree/tree.png",
-        expand("denovo_assembly/{sample}/contigs.fasta", sample=IDS),
-        expand("blast/contigs/{sample}.tsv", sample=IDS)
+        expand("best_references/{sample}.tsv", sample=IDS)
 
 
 rule rpk:
