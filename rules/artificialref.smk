@@ -9,15 +9,12 @@ rule makeblastdb:
     output:
         multiext(
             'reference/references.fa',
-            ".ndb",
             ".nhr",
             ".nin",
             ".nog",
-            ".nos",
-            ".not",
-            ".nsq",
-            ".ntf",
-            "nto"
+            ".nsd",
+            ".nsi",
+            ".nsq"
         )
     conda:
         "../envs/blast.yaml" #because we should not use variables for environments
@@ -32,15 +29,12 @@ rule mapcontigs:
         contigs = "denovo_assembly/{sample}/contigs.fasta",
         indexed_ref = multiext(
             'reference/references.fa',
-            ".ndb",
             ".nhr",
             ".nin",
             ".nog",
-            ".nos",
-            ".not",
-            ".nsq",
-            ".ntf",
-            "nto"
+            ".nsd",
+            ".nsi",
+            ".nsq"
         )
     output:
         best_reference = "blastcontigs/{sample}.out"
