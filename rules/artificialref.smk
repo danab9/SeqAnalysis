@@ -51,24 +51,10 @@ rule best_reference:
         table="blast/contigs/{sample}.tsv", reference="reference/reference.fa"
     output:
         "best_references/{sample}.fasta"
-    run:
-        import pandas as pd
-        from Bio import SeqIO
-
-        table = pd.read_csv(input[0], sep='\t', header=None)
-        table = table[table[0].str.contains('NODE_1')] # get first contig only
-        table = table.sort_values([10,2], ascending=[True,False])
-        best_ref = table.iloc[0,1]
-        with open(input[1]) as ref, open(output[0],'w') as out:
-            record_dict = SeqIO.to_dict(SeqIO.parse(input[1], "fasta"))
-            for key in record_dict:
-                if best_ref in key:
-                    SeqIO.write(record_dict[key], out, "fasta")
-                    break
-
-
-
-
+    conda:
+        "../envs/artificialref.yaml"
+    shell:
+        "python scripts/best_reference.py {input.table} {input.reference} {output}"
 
 
 

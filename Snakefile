@@ -18,7 +18,7 @@ rule all:
         #"variability/variability.txt",
         #"variability/variability.png",
         #"tree/tree.png",
-        expand("best_references/{sample}.tsv", sample=IDS)
+        expand("best_references/{sample}.fasta", sample=IDS)
 
 
 rule rpk:

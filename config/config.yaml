@@ -11,6 +11,7 @@ multiqcparam: "-f"
 
 trimmomatic:
   trailing: "20"
+  iluminaclip: "../adapters/TruSeq3-PE.fa"
 
 tree:
   method: "iqtree" #{fasttree,raxml,iqtree}
