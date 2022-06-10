@@ -1,38 +1,30 @@
-import pandas as pd
-configfile : "config/config.yaml"
-samples = pd.read_csv(config["samples"],index_col="sample", sep ='\t')
-
 rule msa:
     input:
         sequences = expand("fasta/{sample}.fa", sample=IDS),
-        #directory = directory("fasta")
     output:
         alignment = "msa/alignment.fasta"
     log:
         "logs/msa/msa.log"
-    threads: 4
+    threads: 6
     conda:
         "../envs/env.yaml"
     shell:
-        "python3 -m augur align --sequences {input.sequences} -o {output.alignment} &> {log}"  #Question: is python3 ok?
-        #"augur align --sequences {input.directory} -o {output.alignment} &> {log}"
-
-
+        "python3 -m augur align --sequences {input.sequences} -o {output.alignment} --threads {threads} &> {log}"
 
 rule tree:
     input:
         alignment = "msa/alignment.fasta"
     output:
-        tree = "tree/tree.nwk" #the output does not work yet, but without defining an ouptut, the output is stored as msa/alignment.tree
+        tree = "tree/tree.nwk"
     log:
         "logs/tree/tree.log"
-    threads: 4
+    threads: 6
     params:
         method = config["tree"]["method"]
     conda:
         "../envs/env.yaml"
     shell:
-        "augur tree --method {params.method} --alignment {input.alignment} --output {output.tree} &> {log}"     #augur tree --method iqtree --alignment msa/alignment.fasta --output tree/tree.nwk
+        "augur tree --method {params.method} --alignment {input.alignment} --output {output.tree} --threads {threads} &> {log}"
 
 rule treevisual:
     input:
@@ -41,40 +33,23 @@ rule treevisual:
         png = 'tree/tree.png'
     conda:
         "../envs/env.yaml"
+    threads: 1
     script:
         "../scripts/treevisual.py"
 
-#
-#     with open('cell_division_newick_cells_0.txt','r') as file:
-#         s = file.read()  # read from file
-#         t = Tree(s,format=8)  # read Newick format 8
-#         print(t)  # print tree as txt
-#         t.render('tree.png')
-#
-# rule treevisual2:
-#     # ETE3 http://etetoolkit.org/documentation/ete-view/
-#     # https://morpheus.gitlab.io/courses/drawing-cell-genealogies/visualize-trees-using-ete3/
-#
-#     with open('cell_division_newick_cells_0.txt','r') as file:
-#         s = file.read()  # read from file
-#         t = Tree(s,format=8)  # read Newick format 8
-#         print(t)  # print tree as txt
-#         t.render('cell_genealogy.png')
-
-
 rule variability:
+    #  Source: F. Francis, 2015, https://github.com/ffrancis/Multiple-sequence-alignment-Shannon-s-entropy/blob/master/msa_shannon_entropy012915.py !
     input:
         alignment="msa/alignment.fasta"
     params:
         l = config['variability']['l']
     output:
         variability = "variability/variability.txt",
-        image = "variability/variability.png" #if image.
+        image = "variability/variability.png" #if image
     log:
         "logs/script/script.log"
-    threads: 4
+    threads: 1
     conda:
         "../envs/env.yaml"
     script:
         "../scripts/variability.py"
-    #{input.alignment} {output.variability} {params.l} &> {log}"  #Question: is python3 ok?

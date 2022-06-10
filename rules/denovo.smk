@@ -1,9 +1,3 @@
-configfile : "config/config.yaml"
-import pandas as pd
-spades_env = "../envs/spades.yaml"
-
-samples = pd.read_csv(config["samples"],index_col="sample", sep ='\t')
-
 rule spades:  # denovo assembly
     input:
         r1 = lambda wildcards: samples.at[wildcards.sample, 'fq1'],
@@ -11,7 +5,7 @@ rule spades:  # denovo assembly
     output:
         file="denovo_assembly/{sample}/contigs.fasta"
     conda:
-        spades_env
+        "../envs/spades.yaml"
     log:
         "logs/spades/{sample}.log"
     threads: 4

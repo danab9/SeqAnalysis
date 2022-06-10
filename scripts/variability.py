@@ -6,10 +6,6 @@ msa = snakemake.input["alignment"]
 l = snakemake.params["l"]
 image_dir = snakemake.output["image"]
 variability_dir = snakemake.output["variability"]
-# variability_dir = "sldkfja.txt"
-# l = 3
-# msa = "example.fasta"
-# image_dir = "test.png"
 
 alignment_mat = []
 with open(msa) as handle:
@@ -20,6 +16,7 @@ alignment_mat = np.array(alignment_mat)
 
 
 def shannon_entropy(list_input):
+    # Source: F. Francis, 2015, https://github.com/ffrancis/Multiple-sequence-alignment-Shannon-s-entropy/blob/master/msa_shannon_entropy012915.py !
     # input: msa column of a poistion
     # output: entropy
     unique_base = set(list_input)  # Get only the unique bases in a column
@@ -61,5 +58,3 @@ plt.ylabel("entropy")
 plt.xlabel("sequence position")
 plt.title("Entropy averaged over "+ str(l) + " window length")
 plt.savefig(image_dir)
-# # input: averaged entropy over window length (e.g. kernalized)
-# # output: visualization.

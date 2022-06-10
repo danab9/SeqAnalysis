@@ -1,16 +1,9 @@
-import pandas as pd
-configfile : "config/config.yaml"
-
-samples = pd.read_csv(config["samples"],index_col="sample", sep ='\t')
-ref_prefix = "reference/artificial_reference.fa" #config['ref']
-
-
 rule bowtie2_build:
     input:
-        ref_prefix+".fa"
+        "reference/artificial_reference_{sample}.fa" #todo: add sample name (?!)
     output:
         multiext(
-            ref_prefix,
+            "reference/artificial_reference_{sample}",
             ".1.bt2",
             ".2.bt2",
             ".3.bt2",
@@ -19,7 +12,7 @@ rule bowtie2_build:
             ".rev.2.bt2",
         )
     log:
-        "logs/bowtie2_build/build.log"
+        "logs/bowtie2_build/build_{sample}.log"
     threads: 4
     conda:
         "../envs/env.yaml"
@@ -29,7 +22,7 @@ rule bowtie2_build:
 rule mapreads:
     input:
         indexed_ref = multiext(
-                ref_prefix,
+                "reference/artificial_reference_{sample}",
                 ".1.bt2",
                 ".2.bt2",
                 ".3.bt2",
@@ -41,13 +34,12 @@ rule mapreads:
     output:
         "sam/{sample}.sam"
     params:
-        local = config["bowtie2"]["local"], #todo: test if this works.
+        local = config["bowtie2"]["local"],
         ma = config["bowtie2"]["ma"]
     log:
         "logs/bowtie2/{sample}_aligment.log"
-    threads: 4
+    threads: 6
     conda:
         "../envs/env.yaml"
     shell:
-        "bowtie2 -x {ref_prefix} -1 {input.r1} -2 {input.r2} -S {output}  --threads {threads} &> {log}" #--ma {params.ma} >> It seems like we did not obtain a good fasta...
-
+        "bowtie2 -x {ref_prefix} -1 {input.r1} -2 {input.r2} -S {output} --threads {threads} &> {log}"
