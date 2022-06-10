@@ -54,7 +54,7 @@ rule readblast:
         references = config["references"], #fasta file with multiple user provided references, not only prefix.
         contigs = "denovo_assembly/{sample}/contigs.fasta"
     output:
-        best_reference = "best_reference_{sample}.fa"
+        best_reference = "reference/best_reference_{sample}.fa"
     log:
         "logs/blastreads/{sample}.log"
     threads: 4
@@ -65,10 +65,10 @@ rule readblast:
 
 rule artificialreference:
     input: # contigs for the sample, and best reference for the sample
-        best_reference = "best_reference_{sample}.fa", # reference that was most similar to our sample.
+        best_reference = "reference/best_reference_{sample}.fa", # reference that was most similar to our sample.
         contigs = "denovo_assembly/{sample}/contigs.fasta"
     output:
-        artificial_reference = "artificial_reference_{sample}.sam"
+        artificial_reference = "reference/artificial_reference_{sample}.sam"
     log:
         "logs/artificialreference/{sample}.log"
     threads: 4
@@ -80,10 +80,10 @@ rule artificialreference:
 
 rule artificialrefconcensus:
     input:
-        best_reference = "best_reference_{sample}.fa",
-        sam = "artificial_reference_{sample}.sam"
+        best_reference = "reference/best_reference_{sample}.fa",
+        sam = "reference/artificial_reference_{sample}.sam"
     output:
-        consensus = "artificial_reference_{sample}.fa"
+        consensus = "reference/artificial_reference_{sample}.fa"
     log:
         "logs/bcsf/{sample}.log"
     threads: 4

@@ -1,7 +1,7 @@
 samples: "samples.tsv"
 
 # parameters:
-references: "reference.fa"
+references: "reference/reference.fa"
 
 bowtie2:
   local: "--local" #"--local" or " "

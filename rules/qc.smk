@@ -39,7 +39,7 @@ rule trimmomatic:
         "logs/trimmomatic/{sample}.log"
     threads: 4
     shell:
-        "trimmomatic PE {input.r1} {input.r2} {output.r1_p} {output.r1_u} {output.r2_p} {output.r2_u} TRAILING:20 --threads {threads}&> {log}"
+        "trimmomatic PE {input.r1} {input.r2} {output.r1_p} {output.r1_u} {output.r2_p} {output.r2_u} TRAILING:{params.trailing}--threads {threads}&> {log}"
 
 
 rule qualimap:
