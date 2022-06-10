@@ -51,10 +51,10 @@ rule best_reference:
         table="blast/contigs/{sample}.tsv",
         reference="reference/reference.fa"
     output:
-        "best_references/{sample}.fa"
+        "best_references/{sample}.fasta"
     run:
         import pandas as pd
-        from Bio import SeqIO 
+        from Bio import SeqIO
 
         table = pd.read_csv(input[0], sep='\t', header=None)
         table = table[table[0].str.contains('NODE_1')] # get first contig only
@@ -64,7 +64,7 @@ rule best_reference:
             record_dict = SeqIO.to_dict(SeqIO.parse(input[1], "fasta"))
             for key in record_dict:
                 if best_ref in key:
-                    SeqIO.write(record_dict[key], out, "fasta")
+                    SeqIO.write(record_dict[key], out, "fastasta")
                     break
 
 
@@ -104,7 +104,7 @@ rule artificialreference:
 
 rule artificialrefconcensus:
     input:
-        best_reference = "best_references/{sample}.fa",
+        best_reference = "best_references/{sample}.fasta",
         sam = "reference/artificial_reference_{sample}.sam"
     output:
         consensus = "reference/artificial_reference_{sample}.fa"
