@@ -54,7 +54,7 @@ rule best_reference:
         "best_references/{sample}.fa"
     run:
         import pandas as pd
-        from Bio import SeqIO
+        from Bio import SeqIO 
 
         table = pd.read_csv(input[0], sep='\t', header=None)
         table = table[table[0].str.contains('NODE_1')] # get first contig only
