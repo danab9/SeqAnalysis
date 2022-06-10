@@ -54,7 +54,7 @@ rule qualimap:
         "logs/qualimap/{sample}.log"
     threads: 4
     shell:
-        "qualimap bamqc -bam {input} -outdir {output.dir} --threads {threads} &> {log}"
+        "qualimap bamqc -bam {input} -outdir {output.dir} -nt {threads} &> {log}"
 
 rule multiqc:
     input:

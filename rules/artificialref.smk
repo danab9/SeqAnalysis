@@ -8,7 +8,7 @@ rule makeblastdb:
         "reference/reference.fa"
     output:
         multiext(
-            'reference/references.fa',
+            'reference/reference.fa',
             ".nhr",
             ".nin",
             ".nog",
@@ -48,9 +48,10 @@ rule mapcontigs:
 
 rule best_reference:
     input:
-        table="blast/contigs/{sample}.tsv", reference="reference/reference.fa"
+        table="blast/contigs/{sample}.tsv",
+        reference="reference/reference.fa"
     output:
-        "best_references/{sample}.tsv"
+        "best_references/{sample}.fa"
     run:
         import pandas as pd
         from Bio import SeqIO
@@ -72,48 +73,54 @@ rule best_reference:
 
 
 
-rule readblast:
-    input:
-        references = config["references"], #fasta file with multiple user provided references, not only prefix.
-        contigs = "denovo_assembly/{sample}/contigs.fasta"
-    output:
-        best_reference = "best_reference_{sample}.fa"
-    log:
-        "logs/blastreads/{sample}.log"
-    threads: 4
-    conda:
-        "../envs/artificialref.yaml"
-    shell:
-        "echo hello 2> {log}"
+# rule readblast:
+#     input:
+#         references = config["references"], #fasta file with multiple user provided references, not only prefix.
+#         contigs = "denovo_assembly/{sample}/contigs.fasta"
+#     output:
+#         best_reference = "best_reference_{sample}.fa"
+#     log:
+#         "logs/blastreads/{sample}.log"
+#     threads: 4
+#     conda:
+#         "../envs/artificialref.yaml"
+#     shell:
+#         "echo hello 2> {log}"
 
 rule artificialreference:
     input: # contigs for the sample, and best reference for the sample
-        best_reference = "best_reference_{sample}.fa", # reference that was most similar to our sample.
+        best_reference = "best_references/{sample}.fa", # reference that was most similar to our sample.
         contigs = "denovo_assembly/{sample}/contigs.fasta"
     output:
-        artificial_reference = "artificial_reference_{sample}.sam"
+        artificial_reference = "reference/artificial_reference_{sample}.sam"
     log:
         "logs/artificialreference/{sample}.log"
-    threads: 4
+    threads: 1 #Not possible to assign threads to minimap2
     conda:
         "../envs/artificialref.yaml"
     shell:
-        "minimap2 -a {input.best_reference} {input.contigs} > {output.artificial_reference} 2> {log}"
+        "minimap2 -a {input.best_reference} {input.contigs} > {output.artificial_reference} 2> {log}" #TODO: make sure that it does not output to terminal
         # minimap https://github.com/lh3/minimap2
 
 rule artificialrefconcensus:
     input:
-        best_reference = "best_reference_{sample}.fa",
-        sam = "artificial_reference_{sample}.sam"
+        best_reference = "best_references/{sample}.fa",
+        sam = "reference/artificial_reference_{sample}.sam"
     output:
-        consensus = "artificial_reference_{sample}.fa"
+        consensus = "reference/artificial_reference_{sample}.fa"
     log:
         "logs/bcsf/{sample}.log"
-    threads: 4
+    threads: 1
     conda:
         "../envs/artificialref.yaml"
     shell:
-        "bcftools mpileup -B -Ou -f {input.best_reference} {input.sam} | bcftools call -mv -M -Oz -o calls.vcf.gz 2> {log}"
-        "bcftools index calls.vcf.gz 2> {log}"
-        "cat {input.best_reference} | bcftools consensus calls.vcf.gz > {output.consensus} 2> {log}"
-        # TODO; check if it works with 2logs and multiple commands.
+        """
+        bcftools mpileup -B -Ou -f {input.best_reference} {input.sam} | bcftools call -mv -M -Oz -o calls.vcf.gz 2> {log}
+        bcftools index calls.vcf.gz 2> {log}
+        cat {input.best_reference} | bcftools consensus calls.vcf.gz > {output.consensus} 2> {log}
+        """
+        # TODO; check if it works for you Dana;
+
+        #  [mpileup] 1 samples in 1 input files
+        #  [E::bam_plp_push] The input is not sorted (reads out of order)
+

@@ -1,6 +1,6 @@
 rule bowtie2_build:
     input:
-        "reference/artificial_reference_{sample}.fa" #todo: add sample name (?!)
+        "reference/artificial_reference_{sample}.fa"
     output:
         multiext(
             "reference/artificial_reference_{sample}",
@@ -17,7 +17,7 @@ rule bowtie2_build:
     conda:
         "../envs/env.yaml"
     shell:
-        "bowtie2-build {input} {ref_prefix} --threads {threads} &> {log}"
+        "bowtie2-build {input} reference/artificial_reference_{wildcards.sample} --threads {threads} &> {log}"
 
 rule mapreads:
     input:
@@ -42,4 +42,4 @@ rule mapreads:
     conda:
         "../envs/env.yaml"
     shell:
-        "bowtie2 -x {ref_prefix} -1 {input.r1} -2 {input.r2} -S {output} --threads {threads} &> {log}"
+        "bowtie2 -x reference/artificial_reference_{wildcards.sample} -1 {input.r1} -2 {input.r2} -S {output} --threads {threads} &> {log}"
