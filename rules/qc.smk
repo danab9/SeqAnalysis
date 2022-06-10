@@ -32,14 +32,15 @@ rule trimmomatic:
         r1_p= "trimmed/{sample}_1_P.fastq.gz", r1_u = "trimmed/{sample}_1_UP.fastq.gz",
         r2_p= "trimmed/{sample}_2_P.fastq.gz", r2_u = "trimmed/{sample}_2_UP.fastq.gz"
     params:
-        trailing = config["trimmomatic"]['trailing']
+        trailing = config["trimmomatic"]['trailing'],
+        illuminaclip = ':'.join(config["trimmomatic"]["illuminaclip"].values())
     conda:
         "../envs/env.yaml"
     log:
         "logs/trimmomatic/{sample}.log"
     threads: 4
     shell:
-        "trimmomatic PE {input.r1} {input.r2} {output.r1_p} {output.r1_u} {output.r2_p} {output.r2_u} TRAILING:{params.trailing}--threads {threads}&> {log}"
+        "trimmomatic PE {input.r1} {input.r2} {output.r1_p} {output.r1_u} {output.r2_p} {output.r2_u} TRAILING:{params.trailing} ILLUMINACLIP:{params.illuminaclip} -threads {threads} &> {log}"
 
 
 rule qualimap:
@@ -47,7 +48,7 @@ rule qualimap:
         "bam_sorted/{sample}_sorted.bam"
     output:
         dir=directory("qc/qualimap/{sample}"),
-        file=("qc/qualimap/{sample}/qualimapReport.html"),
+        file="qc/qualimap/{sample}/qualimapReport.html"
     conda:
         "../envs/env.yaml"
     log:

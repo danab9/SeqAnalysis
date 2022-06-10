@@ -18,7 +18,8 @@ rule all:
         #"variability/variability.txt",
         #"variability/variability.png",
         #"tree/tree.png",
-        expand("best_references/{sample}.fasta", sample=IDS)
+        expand("best_references/{sample}.fasta", sample=IDS),
+        "qc/multiqc_report.html"
 
 
 rule rpk:
