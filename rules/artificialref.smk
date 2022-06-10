@@ -64,7 +64,7 @@ rule best_reference:
             record_dict = SeqIO.to_dict(SeqIO.parse(input[1], "fasta"))
             for key in record_dict:
                 if best_ref in key:
-                    SeqIO.write(record_dict[key], out, "fastasta")
+                    SeqIO.write(record_dict[key], out, "fasta")
                     break
 
 
