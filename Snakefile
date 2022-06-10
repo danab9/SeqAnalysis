@@ -19,18 +19,7 @@ rule all:
         #"variability/variability.png",
         #"tree/tree.png",
         expand("denovo_assembly/{sample}/contigs.fasta", sample=IDS),
-        multiext(
-            'reference/references.fa',
-            ".ndb",
-            ".nhr",
-            ".nin",
-            ".nog",
-            ".nos",
-            ".not",
-            ".nsq",
-            ".ntf",
-            "nto"
-        )
+        expand("blast/contigs/{sample}.tsv", sample=IDS)
 
 
 rule rpk:

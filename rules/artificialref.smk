@@ -5,7 +5,7 @@ samples = pd.read_csv(config["samples"],index_col="sample", sep ='\t')
 
 rule makeblastdb:
     input:
-        "reference/references.fa"
+        "reference/reference.fa"
     output:
         multiext(
             'reference/references.fa',
@@ -44,10 +44,32 @@ rule mapcontigs:
     conda:
         "../envs/blast.yaml"
     shell:
-        "blastn -query {input.contigs} -db reference/references.fa -outfmt 6 -out {output} 2>{log}"
+        "blastn -query {input.contigs} -db reference/references.fa -outfmt 6 -out {output} -num_threads {threads} 2>{log}"
 
 rule best_reference:
     input:
+        table="blast/contigs/{sample}.tsv", reference="reference/references.fa"
+    output:
+        "best_references/{sample}.tsv"
+    run:
+        import pandas as pd
+        from Bio import SeqIO
+
+        table = pd.read_csv(input[0], sep='\t', header=None)
+        table = table[table[0].str.contains('NODE_1')] # get first contig only
+        table = table.sort_values([10,2], ascending=[True,False])
+        best_ref = table.iloc[0,1]
+        with open(input[1]) as ref, open(output,'w') as out:
+            record_dict = SeqIO.to_dict(SeqIO.parse(input[1], "fasta"))
+            for key in record_dict:
+                if best_ref in key:
+                    SeqIO.write(record_dict[key], out, "fasta")
+                    break
+
+
+
+
+
 
 
 rule readblast:
