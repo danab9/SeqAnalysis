@@ -1,5 +1,3 @@
-configfile : "config/config.yaml"
-
 rule samtobam:
     input:
         "sam/{sample}.sam"

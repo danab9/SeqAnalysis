@@ -1,8 +1,3 @@
-configfile : "config/config.yaml"
-
-import pandas as pd
-samples = pd.read_csv(config["samples"],index_col="sample", sep ='\t')
-IDS=[s for s in list(samples.index)]
 r1 = lambda wildcards:samples.at[wildcards.sample, 'fq1']
 r2 = lambda wildcards:samples.at[wildcards.sample, 'fq2']
 all_fq = [ID + "_1" for ID in IDS] + [ID + "_2" for ID in IDS]  # todo!

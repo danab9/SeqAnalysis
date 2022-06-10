@@ -1,7 +1,3 @@
-import pandas as pd
-configfile : "config/config.yaml"
-samples = pd.read_csv(config["samples"],index_col="sample", sep ='\t')
-
 rule msa:
     input:
         sequences = expand("fasta/{sample}.fa", sample=IDS),

@@ -1,14 +1,9 @@
-import pandas as pd
-configfile : "config/config.yaml"
-
-samples = pd.read_csv(config["samples"],index_col="sample", sep ='\t')
-
 rule makeblastdb:
     input:
-        "reference/references.fa"
+        "reference/reference.fa"
     output:
         multiext(
-            'reference/references.fa',
+            'reference/reference.fa',
             ".ndb",
             ".nhr",
             ".nin",
@@ -31,7 +26,7 @@ rule mapcontigs:
     input:
         contigs = "denovo_assembly/{sample}/contigs.fasta",
         indexed_ref = multiext(
-            'reference/references.fa',
+            'reference/reference.fa',
             ".ndb",
             ".nhr",
             ".nin",

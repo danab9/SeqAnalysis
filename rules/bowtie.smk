@@ -1,16 +1,9 @@
-import pandas as pd
-configfile : "config/config.yaml"
-
-samples = pd.read_csv(config["samples"],index_col="sample", sep ='\t')
-ref_prefix = "reference/artificial_reference.fa" #config['ref']
-
-
 rule bowtie2_build:
     input:
-        ref_prefix+".fa"
+        "reference/artificial_reference.fa" #todo: add sample name (?!)
     output:
         multiext(
-            ref_prefix,
+            "reference/artificial_reference",
             ".1.bt2",
             ".2.bt2",
             ".3.bt2",
@@ -29,7 +22,7 @@ rule bowtie2_build:
 rule mapreads:
     input:
         indexed_ref = multiext(
-                ref_prefix,
+                "reference/artificial_reference",
                 ".1.bt2",
                 ".2.bt2",
                 ".3.bt2",
