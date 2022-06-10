@@ -6,6 +6,6 @@ dependencies:
   - samtools
   - bowtie2
   - minimap2
-
+  - biopython
 
 prefix: /Users/danabarilan/opt/miniconda3/envs/seqAnalysis
