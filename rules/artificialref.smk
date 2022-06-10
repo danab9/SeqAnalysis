@@ -37,15 +37,17 @@ rule mapcontigs:
             ".nsq"
         )
     output:
-        best_reference = "blastcontigs/{sample}.out"
+        "blast/contigs/{sample}.tsv"
     log:
-        "logs/blastcontigs/{sample}.log"
+        "logs/blast/contigs/{sample}.log"
     threads: 4
     conda:
         "../envs/blast.yaml"
     shell:
-        "blastn -i {input.contigs} 2>{log}"
+        "blastn -query {input.contigs} -db reference/references.fa -outfmt 6 -out {output} 2>{log}"
 
+rule best_reference:
+    input:
 
 
 rule readblast:
