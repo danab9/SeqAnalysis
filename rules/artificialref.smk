@@ -1,8 +1,3 @@
-import pandas as pd
-configfile : "config/config.yaml"
-
-samples = pd.read_csv(config["samples"],index_col="sample", sep ='\t')
-
 rule makeblastdb:
     input:
         "reference/reference.fa"
@@ -46,6 +41,7 @@ rule mapcontigs:
     shell:
         "blastn -query {input.contigs} -db reference/reference.fa -outfmt 6 -out {output} -num_threads {threads} 2>{log}"
 
+
 rule best_reference:
     input:
         table="blast/contigs/{sample}.tsv",
@@ -60,24 +56,9 @@ rule best_reference:
         "python scripts/best_reference.py {input.table} {input.reference} {output} 2> {log}"
 
 
-
-# rule readblast:
-#     input:
-#         references = config["references"], #fasta file with multiple user provided references, not only prefix.
-#         contigs = "denovo_assembly/{sample}/contigs.fasta"
-#     output:
-#         best_reference = "best_reference_{sample}.fa"
-#     log:
-#         "logs/blastreads/{sample}.log"
-#     threads: 4
-#     conda:
-#         "../envs/artificialref.yaml"
-#     shell:
-#         "echo hello 2> {log}"
-
 rule artificialreference:
     input: # contigs for the sample, and best reference for the sample
-        best_reference = "best_references/{sample}.fa", # reference that was most similar to our sample.
+        best_reference = "best_references/{sample}.fasta", # reference that was most similar to our sample.
         contigs = "denovo_assembly/{sample}/contigs.fasta"
     output:
         artificial_reference = "reference/artificial_reference_{sample}.sam"
@@ -87,8 +68,8 @@ rule artificialreference:
     conda:
         "../envs/artificialref.yaml"
     shell:
-        "minimap2 -a {input.best_reference} {input.contigs} > {output.artificial_reference} 2> {log}" #TODO: make sure that it does not output to terminal
-        # minimap https://github.com/lh3/minimap2
+        "minimap2 -a {input.best_reference} {input.contigs} > {output.artificial_reference} 2> {log}"
+
 
 rule artificialrefconcensus:
     input:

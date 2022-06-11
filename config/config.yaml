@@ -1,7 +1,12 @@
 samples: "samples.tsv"
 
-# parameters:
+# directories
 references: "reference/reference.fa"
+kraken_db: "./kraken_db"
+
+
+# parameters:
+decontamination: "True"
 
 bowtie2:
   local: "--local" #"--local" or " "
@@ -30,3 +35,4 @@ variability:
 skip_trimming: 'False'
 skip_fastQC: 'False'
 skip_qualimap: 'False'
+

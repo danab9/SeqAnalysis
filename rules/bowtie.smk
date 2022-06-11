@@ -32,7 +32,7 @@ rule mapreads:
         r1=(lambda wildcards: samples.at[wildcards.sample, 'fq1']) if config[
             "skip_trimming"] else "trimmed/{sample}_1_P.fastq.gz",
         r2=(lambda wildcards: samples.at[wildcards.sample, 'fq2']) if config[
-            "skip_trimming"] else "trimmed/{sample}_2_P.fastq.gz"
+            "skip_trimming"] else "trimmed/{sample}_2_P.fastq.gz" #"decontaminated/{sample}_2_P.fastq.gz" if config[decontamination] elseif .. else ..
     output:
         "sam/{sample}.sam"
     params:
