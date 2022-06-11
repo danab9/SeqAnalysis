@@ -13,12 +13,24 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/rules/artificialref.smk" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="0" />
+          <option name="caretOffset" value="186" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/rules/msa.smk" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="0" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/Snakefile2" />
+          <option name="caretOffset" value="548" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/config/config.yaml" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="1038" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/rules/bowtie_ass4.smk" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="1038" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/rules/qc.smk" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="966" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/rules/bowtie.smk" />
         </OpenedFileInfo>
       </list>
     </option>
