@@ -5,11 +5,11 @@
     <option name="openedFilesInfos">
       <list>
         <OpenedFileInfo>
-          <option name="caretOffset" value="270" />
+          <option name="caretOffset" value="743" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/Snakefile" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="426" />
+          <option name="caretOffset" value="0" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/rules/artificialref.smk" />
         </OpenedFileInfo>
         <OpenedFileInfo>
@@ -17,20 +17,24 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/rules/msa.smk" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="548" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/config/config.yaml" />
+          <option name="caretOffset" value="1122" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/rules/bowtie.smk" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="1038" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/rules/bowtie_ass4.smk" />
+          <option name="caretOffset" value="613" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/config/config.yaml" />
         </OpenedFileInfo>
         <OpenedFileInfo>
           <option name="caretOffset" value="1038" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/rules/qc.smk" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="966" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/rules/bowtie.smk" />
+          <option name="caretOffset" value="1429" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/rules/bowtie_ass4.smk" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="0" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/rules/samtools.smk" />
         </OpenedFileInfo>
       </list>
     </option>
