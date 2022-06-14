@@ -11,18 +11,7 @@ rule samtobam:
     shell:
       "samtools view -b {input} --threads {threads} > {output} 2> {log}"
 
-rule keep_unmapped:   # TODO: add to rule all, see how to use bowtie mapping rule differently each time
-    input:
-        "sam/{sample}.sam"
-    output:
-        "bam/{sample}_unmapped.bam"
-    conda:
-        "../envs/env.yaml"
-    threads: 4
-    log:
-        "logs/samtools/{sample}_view_unmapped.log"
-    shell:
-        "samtools view -b -f 4 {input} --threads {threads} > {output} 2> {log}"
+
 
 rule sort:
     input:
