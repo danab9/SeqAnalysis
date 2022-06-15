@@ -1,0 +1,7 @@
+name: blast
+channels:
+  - defaults
+  - bioconda
+dependencies:
+  - blast=2.5
+prefix: /storage/mi/danab93/miniconda3/envs/blast

@@ -1,0 +1,10 @@
+name: seqAnalysis
+channels:
+  - defaults
+  - bioconda
+dependencies:
+  - samtools
+  - bedtools
+  - bowtie2
+  - kraken2
+prefix: /Users/danabarilan/opt/miniconda3/envs/seqAnalysis
