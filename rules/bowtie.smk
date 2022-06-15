@@ -30,11 +30,11 @@ rule mapreads:
                 ".rev.1.bt2",
                 ".rev.2.bt2"),
         r1=(lambda wildcards: samples.at[wildcards.sample, 'fq1']) if config[
-            "skip_trimming"] and not config["decontamination"] else "screened_fastq/{sample}_screened_1.fq"
-            if config["decontamination"]  else "trimmed/{sample}_1_P.fastq.gz",
+            "skip_trimming"] and not config["decontamination"]=="True" else "screened_fastq/{sample}_screened_1.fq"
+            if config["decontamination"]=="True"  else "trimmed/{sample}_1_P.fastq.gz",
         r2=(lambda wildcards: samples.at[wildcards.sample, 'fq2']) if config[
-            "skip_trimming"] and not config["decontamination"] else "screened_fastq/{sample}_screened_2.fq"
-            if config["decontamination"] else "trimmed/{sample}_2_P.fastq.gz" #"decontaminated/{sample}_2_P.fastq.gz" if config[decontamination] elseif .. else ..
+            "skip_trimming"] and not config["decontamination"]=="True" else "screened_fastq/{sample}_screened_2.fq"
+            if config["decontamination"]=="True" else "trimmed/{sample}_2_P.fastq.gz" #"decontaminated/{sample}_2_P.fastq.gz" if config[decontamination] elseif .. else ..
     output:
         "sam/{sample}.sam"
     params:

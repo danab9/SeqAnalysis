@@ -23,7 +23,6 @@ rule all:
         #"reference/artificial_reference_ERR4082860.fa",
         expand("reference/artificial_reference_{sample}.fa", sample=IDS),
         expand("best_references/{sample}.fasta", sample=IDS),
-        expand("best_references/{sample}.fasta", sample=IDS),
         "qc/multiqc_report.html" #als add
 
 
