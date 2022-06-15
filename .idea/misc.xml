@@ -17,10 +17,6 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/rules/samtools.smk" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="171" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/rules/screen.smk" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
           <option name="caretOffset" value="2612" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/rules/artificialref.smk" />
         </OpenedFileInfo>
@@ -29,11 +25,12 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/logs/bcsf/ERR4082860.log" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="0" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/dag.svg" />
+          <option name="caretOffset" value="182" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/config/config.yaml" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="fileUrl" value="file://$PROJECT_DIR$/dag.svg.png" />
+          <option name="caretOffset" value="1041" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/rules/decontamination.smk" />
         </OpenedFileInfo>
       </list>
     </option>
