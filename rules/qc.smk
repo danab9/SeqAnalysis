@@ -1,6 +1,5 @@
 r1 = lambda wildcards:samples.at[wildcards.sample, 'fq1']
 r2 = lambda wildcards:samples.at[wildcards.sample, 'fq2']
-all_fq = [ID + "_1" for ID in IDS] + [ID + "_2" for ID in IDS]  # todo!
 
 
 rule temp:

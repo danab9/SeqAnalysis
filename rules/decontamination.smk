@@ -18,24 +18,17 @@ rule kraken:
     shell:
         "kraken2 -db {params.kraken_db} --paired --classified-out screened/{wildcards.sample}#_P.fq {input.r1} {input.r2} --report {output.report} --threads {threads} &> {log}"
 
-rule screen:
+rule screen: #creates a multiqc report of the screened reads in the folder qc/screened
     input:
-        screen=expand("screened/{sample}.txt",sample=all_fq) if config["decontamination"] in['False',''] else [],
+        screen=expand("screened/{sample}.txt",sample=IDS),
     output:
-        "qc/multiqc_krakenscreen_report.html"
+        "qc/screened/multiqc_report.html"
     conda:
         "../envs/multiqc.yaml"
     log:
-        "logs/multiqc/multiqc.log"
+        "logs/multiqc/multiqc_screen.log"
     threads: 1
     params:
         config["multiqcparam"]  # for example: -f parameter to ensure existing multiqc report is override.
     shell:
-        "multiqc qc {params} -o qc &> {log}"
-# https://telatin.github.io/microbiome-bioinformatics/MultiQC/
-# https://github.com/DerrickWood/kraken2/wiki/Manual#classification use --report
-
-# rule contamination_fasta:
-#     #create a fasta from the output report by kraken2, for each sample.
-#     # In the assignmetn is not stated that we have to do this, but that the user should do this based on the MULTIQC
-#
+        "multiqc screened {params} -o qc/screened &> {log}"
