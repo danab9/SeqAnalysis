@@ -9,11 +9,11 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/Snakefile" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="186" />
+          <option name="caretOffset" value="350" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/rules/msa.smk" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="1597" />
+          <option name="caretOffset" value="1097" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/rules/bowtie.smk" />
         </OpenedFileInfo>
         <OpenedFileInfo>
@@ -25,16 +25,12 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/rules/samtools.smk" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="79" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/config/config.yaml" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
-          <option name="caretOffset" value="0" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/rules/decontamination.smk" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
-          <option name="caretOffset" value="1509" />
+          <option name="caretOffset" value="720" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/rules/screen.smk" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="167" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/config/config.yaml" />
         </OpenedFileInfo>
       </list>
     </option>

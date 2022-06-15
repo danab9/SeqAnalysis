@@ -1,9 +1,10 @@
 # bowtie
+to_screen_ref=config["contamination_reference"]
 
 rule bowtie_map_contaminations:
     input:
         indexed_ref= multiext(
-            "reference/to_screen.fa",  # TODO: which reference is removed?
+            to_screen_ref,
             ".1.bt2",
             ".2.bt2",
             ".3.bt2",
@@ -32,7 +33,7 @@ rule keep_unmapped:   # TODO: add to rule all, see how to use bowtie mapping rul
     input:
         "sam_contaminations/{sample}.sam"
     output:
-        "bam/{sample}_unmapped.bam"
+        "bam_contaminations/{sample}_unmapped.bam"
     conda:
         "../envs/env.yaml"
     threads: 4
@@ -43,9 +44,9 @@ rule keep_unmapped:   # TODO: add to rule all, see how to use bowtie mapping rul
 
 rule sam_to_fastq:
     input:
-        "bam/{sample}_unmapped.bam"
+        "bam_contaminations/{sample}_unmapped.bam"
     output:
-        fq1="fastq/{sample}_screened_1.fq", fq2="fastq/{sample}_screened_2.fq"
+        fq1="screened_fastq/{sample}_screened_1.fq", fq2="screened_fastq/{sample}_screened_2.fq"
     conda:
         "../envs/decontamination.smk"
     log:
