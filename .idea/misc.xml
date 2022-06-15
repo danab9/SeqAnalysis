@@ -5,24 +5,28 @@
     <option name="openedFilesInfos">
       <list>
         <OpenedFileInfo>
-          <option name="caretOffset" value="2207" />
+          <option name="caretOffset" value="621" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/Snakefile" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="2649" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/rules/artificialref.smk" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="664" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/config/config.yaml" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
-          <option name="caretOffset" value="1298" />
+          <option name="caretOffset" value="471" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/rules/bowtie.smk" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="369" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/rules/screen.smk" />
+          <option name="caretOffset" value="312" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/rules/denovo.smk" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="777" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/Snakefile" />
+          <option name="caretOffset" value="74" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/config/config.yaml" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="519" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/rules/screen.smk" />
         </OpenedFileInfo>
       </list>
     </option>

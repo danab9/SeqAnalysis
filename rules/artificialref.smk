@@ -61,7 +61,7 @@ rule artificialreference:
         best_reference = "best_references/{sample}.fasta", # reference that was most similar to our sample.
         contigs = "denovo_assembly/{sample}/contigs.fasta"
     output:
-        artificial_reference = "reference/artificial_reference_{sample}.bam"
+        artificial_reference = "reference/artificial/bam/{sample}.bam"
     log:
         "logs/artificialreference/{sample}.log"
     threads: 1 #Not possible to assign threads to minimap2
@@ -72,9 +72,9 @@ rule artificialreference:
 
 rule sort_artificial_reference:
     input:
-        "reference/artificial_reference_{sample}.bam"
+        "reference/artificial/bam/{sample}.bam"
     output:
-        "reference/artificial_reference_{sample}_sorted.bam"
+        "reference/artificial/bam_sorted/{sample}.bam"
     log:
         "logs/samtools/{sample}_sort.log"
     threads: 4
@@ -87,9 +87,9 @@ rule sort_artificial_reference:
 rule artificialrefconcensus:
     input:
         best_reference = "best_references/{sample}.fasta",
-        bam_sorted = "reference/artificial_reference_{sample}_sorted.bam",
+        bam_sorted = "reference/artificial/bam_sorted/{sample}.bam",
     output:
-        consensus = "reference/artificial_reference_{sample}.fa"
+        consensus = "reference/artificial/{sample}.fa"
     log:
         "logs/bcsf/{sample}.log"
     threads: 1
@@ -101,7 +101,7 @@ rule artificialrefconcensus:
         bcftools index calls.vcf.gz -f 2> {log}
         cat {input.best_reference} | bcftools consensus calls.vcf.gz > {output.consensus} 2> {log}
         """
-        # TODO; check if it works for you Dana;
+
 
         #  [mpileup] 1 samples in 1 input files
         #  [E::bam_plp_push] The input is not sorted (reads out of order)

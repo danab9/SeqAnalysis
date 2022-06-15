@@ -1,8 +1,30 @@
 # bowtie
 to_screen_ref=config["contamination_reference"]
 
+rule bowtie2_build_contamination:
+    input:
+        to_screen_ref
+    output:
+        multiext(
+            to_screen_ref,
+            ".1.bt2",
+            ".2.bt2",
+            ".3.bt2",
+            ".4.bt2",
+            ".rev.1.bt2",
+            ".rev.2.bt2",
+        )
+    log:
+        "logs/bowtie2_build/build_contamination.log"
+    threads: 4
+    conda:
+        "../envs/env.yaml"
+    shell:
+        "bowtie2-build {input} --threads {threads} &> {log}"
+
 rule bowtie_map_contaminations:
     input:
+        ref=to_screen_ref,
         indexed_ref= multiext(
             to_screen_ref,
             ".1.bt2",
@@ -12,9 +34,9 @@ rule bowtie_map_contaminations:
             ".rev.1.bt2",
             ".rev.2.bt2"),
         r1=(lambda wildcards: samples.at[wildcards.sample, 'fq1']) if config[
-                "skip_trimming"] else "trimmed/{sample}_1_P.fastq.gz",
+                "skip_trimming"]=='True' else "trimmed/{sample}_1_P.fastq.gz",
         r2=(lambda wildcards: samples.at[wildcards.sample, 'fq2']) if config[
-                "skip_trimming"] else "trimmed/{sample}_2_P.fastq.gz"  #"decontaminated/{sample}_2_P.fastq.gz" if config[decontamination] elseif .. else ..
+                "skip_trimming"]=='True' else "trimmed/{sample}_2_P.fastq.gz"  #"decontaminated/{sample}_2_P.fastq.gz" if config[decontamination] elseif .. else ..
     output:
         "sam_contaminations/{sample}.sam"
     params:
@@ -26,7 +48,7 @@ rule bowtie_map_contaminations:
     conda:
         "../envs/env.yaml"
     shell:
-        "bowtie2 -x reference/to_screen.fa -1 {input.r1} -2 {input.r2} -S {output} --threads {threads} &> {log}"
+        "bowtie2 -x {input.ref} -1 {input.r1} -2 {input.r2} -S {output} --threads {threads} &> {log}"
 
 # samtools
 rule keep_unmapped:   # TODO: add to rule all, see how to use bowtie mapping rule differently each time
