@@ -10,6 +10,8 @@ include: "rules/qc.smk"
 include: "rules/msa.smk"
 include: "rules/denovo.smk"
 include: "rules/artificialref.smk"
+include: "rules/screen.smk"
+include: "rules/decontamination.smk"
 
 rule all:
     input:
@@ -18,10 +20,12 @@ rule all:
         #"variability/variability.txt",
         #"variability/variability.png",
         #"tree/tree.png",
-        "reference/artificial_reference_ERR4082860.fa",
-        expand("best_references/{sample}.fasta", sample=IDS)
+        #"reference/artificial_reference_ERR4082860.fa",
+        expand("reference/artificial_reference_{sample}.fa", sample=IDS),
         expand("best_references/{sample}.fasta", sample=IDS),
-        "qc/multiqc_report.html", #als add
+        expand("best_references/{sample}.fasta", sample=IDS),
+        "qc/multiqc_report.html" #als add
+
 
 
 

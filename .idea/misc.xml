@@ -5,7 +5,7 @@
     <option name="openedFilesInfos">
       <list>
         <OpenedFileInfo>
-          <option name="caretOffset" value="743" />
+          <option name="caretOffset" value="849" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/Snakefile" />
         </OpenedFileInfo>
         <OpenedFileInfo>
@@ -13,24 +13,27 @@
           <option name="fileUrl" value="file://$PROJECT_DIR$/rules/msa.smk" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="1097" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/rules/bowtie.smk" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
-          <option name="caretOffset" value="1038" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/rules/qc.smk" />
-        </OpenedFileInfo>
-        <OpenedFileInfo>
-          <option name="caretOffset" value="280" />
+          <option name="caretOffset" value="572" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/rules/samtools.smk" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="720" />
+          <option name="caretOffset" value="171" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/rules/screen.smk" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="167" />
-          <option name="fileUrl" value="file://$PROJECT_DIR$/config/config.yaml" />
+          <option name="caretOffset" value="2612" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/rules/artificialref.smk" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="431" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/logs/bcsf/ERR4082860.log" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="0" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/dag.svg" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="fileUrl" value="file://$PROJECT_DIR$/dag.svg.png" />
         </OpenedFileInfo>
       </list>
     </option>

@@ -61,20 +61,33 @@ rule artificialreference:
         best_reference = "best_references/{sample}.fasta", # reference that was most similar to our sample.
         contigs = "denovo_assembly/{sample}/contigs.fasta"
     output:
-        artificial_reference = "reference/artificial_reference_{sample}.sam"
+        artificial_reference = "reference/artificial_reference_{sample}.bam"
     log:
         "logs/artificialreference/{sample}.log"
     threads: 1 #Not possible to assign threads to minimap2
     conda:
         "../envs/artificialref.yaml"
     shell:
-        "minimap2 -a {input.best_reference} {input.contigs} > {output.artificial_reference} 2> {log}"
+        "minimap2 -a {input.best_reference} {input.contigs} | samtools view -b - > {output.artificial_reference} 2> {log}"
+
+rule sort_artificial_reference:
+    input:
+        "reference/artificial_reference_{sample}.bam"
+    output:
+        "reference/artificial_reference_{sample}_sorted.bam"
+    log:
+        "logs/samtools/{sample}_sort.log"
+    threads: 4
+    conda:
+        "../envs/env.yaml"
+    shell:
+        "samtools sort {input} -o {output} --threads {threads} &> {log}"
 
 
 rule artificialrefconcensus:
     input:
         best_reference = "best_references/{sample}.fasta",
-        sam = "reference/artificial_reference_{sample}.sam"
+        bam_sorted = "reference/artificial_reference_{sample}_sorted.bam",
     output:
         consensus = "reference/artificial_reference_{sample}.fa"
     log:
@@ -84,8 +97,8 @@ rule artificialrefconcensus:
         "../envs/artificialref.yaml"
     shell:
         """
-        bcftools mpileup -B -Ou -f {input.best_reference} {input.sam} | bcftools call -mv -M -Oz -o calls.vcf.gz 2> {log}
-        bcftools index calls.vcf.gz 2> {log}
+        bcftools mpileup -B -Ou -f {input.best_reference} {input.bam_sorted} | bcftools call -mv -M -Oz -o calls.vcf.gz 2> {log}
+        bcftools index calls.vcf.gz -f 2> {log}
         cat {input.best_reference} | bcftools consensus calls.vcf.gz > {output.consensus} 2> {log}
         """
         # TODO; check if it works for you Dana;
