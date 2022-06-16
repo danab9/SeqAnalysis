@@ -1,9 +1,9 @@
 rule bowtie2_build:
     input:
-        "../results/references/artificial/consensus/{sample}.fa"
+        "../results/references/artificial/{sample}.fa"
     output:
         multiext(
-            "../results/references/artificial/consensus/{sample}",  # .fa?
+            "../results/references/artificial/{sample}",  # .fa?
             ".1.bt2",
             ".2.bt2",
             ".3.bt2",
@@ -22,7 +22,7 @@ rule bowtie2_build:
 rule mapreads:
     input:
         indexed_ref = multiext(
-                "../results/references/artificial/consensus/{sample}",
+                "../results/references/artificial/{sample}",
                 ".1.bt2",
                 ".2.bt2",
                 ".3.bt2",
@@ -46,4 +46,4 @@ rule mapreads:
     conda:
         "../envs/env.yaml"
     shell:
-        "bowtie2 -x ../results/references/artificial/consensus/{sample} -1 {input.r1} -2 {input.r2} -S {output} --ma {params.ma} {params.local} --threads {threads} &> {log}"
+        "bowtie2 -x ../results/references/artificial/{wildcards.sample} -1 {input.r1} -2 {input.r2} -S {output} --ma {params.ma} {params.local} --threads {threads} &> {log}"

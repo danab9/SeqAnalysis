@@ -1,9 +1,9 @@
-samples: "samples.tsv"
+samples: "../resources/samples.tsv"
 
 # directories
-references: "resources/references/references.fa"
-kraken_db: "./kraken_db"
-contamination_reference: "reference/flu.fa"
+references: "../resources/references/references.fa"
+kraken_db: "../resources/kraken_db"
+contamination_reference: "../resources/reference/flu.fa"
 
 
 # parameters:
@@ -18,7 +18,7 @@ multiqcparam: "-f"
 trimmomatic:
   trailing: "20"
   illuminaclip:
-    file: "../adapters/TruSeq3-PE.fa"
+    file: "../resources/adapters/TruSeq3-PE.fa"
     seedMissmatches: '2'
     palindromeClipThreshold: '30'
     simpleClipThreshold: '10'
@@ -34,6 +34,6 @@ variability:
   l: 2 #Window length
 
 skip_trimming: 'True'
-skip_fastQC: 'False'
+skip_fastQC: 'True'
 skip_qualimap: 'False'
 
