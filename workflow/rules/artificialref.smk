@@ -1,4 +1,3 @@
-
 rule makeblastdb:
     input:
         config["references"]
@@ -18,10 +17,10 @@ rule makeblastdb:
         "../results/logs/blastdb.log"
     shell:
         """
-        cp {input} ../results/references/references.fa
+        mkdir -p results/references/ && cp {input} ../results/references/references.fa
         makeblastdb -in ../results/references/references.fa -dbtype nucl -parse_seqids -logfile {log}
         """
-        #cp might not work if the user does not have the folder references in results
+        #note the ../ before results.
 
 rule mapcontigs:
     input:
