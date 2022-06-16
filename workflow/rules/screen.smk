@@ -3,10 +3,10 @@ to_screen_ref=config["contamination_reference"]
 
 rule bowtie2_build_contamination:
     input:
-        to_screen_ref
+        config["contamination_reference"]
     output:
         multiext(
-            to_screen_ref,
+            config["contamination_reference"],
             ".1.bt2",
             ".2.bt2",
             ".3.bt2",
@@ -15,7 +15,7 @@ rule bowtie2_build_contamination:
             ".rev.2.bt2",
         )
     log:
-        "logs/bowtie2_build/build_contamination.log"
+        "../results/logs/bowtie2_build/build_contamination.log"
     threads: 4
     conda:
         "../envs/env.yaml"
@@ -34,16 +34,16 @@ rule bowtie_map_contaminations:
             ".rev.1.bt2",
             ".rev.2.bt2"),
         r1=(lambda wildcards: samples.at[wildcards.sample, 'fq1']) if config[
-                "skip_trimming"]=='True' else "trimmed/{sample}_1_P.fastq.gz",
+                "skip_trimming"]=='True' else "../results/fastq/trimmed/{sample}_1_P.fastq.gz",
         r2=(lambda wildcards: samples.at[wildcards.sample, 'fq2']) if config[
-                "skip_trimming"]=='True' else "trimmed/{sample}_2_P.fastq.gz"  #"decontaminated/{sample}_2_P.fastq.gz" if config[decontamination] elseif .. else ..
+                "skip_trimming"]=='True' else "../results/fastq/trimmed/{sample}_2_P.fastq.gz"  #"decontaminated/{sample}_2_P.fastq.gz" if config[decontamination] elseif .. else ..
     output:
-        "sam_contaminations/{sample}.sam"
+        "../results/sam/contaminations/{sample}.sam"
     params:
         local=config["bowtie2"]["local"],
         ma=config["bowtie2"]["ma"]
     log:
-        "logs/bowtie2/{sample}_screen_aligment.log"
+        "../results/logs/bowtie2/contamination_alignment/{sample}.log"
     threads: 6
     conda:
         "../envs/env.yaml"
@@ -53,25 +53,25 @@ rule bowtie_map_contaminations:
 # samtools
 rule keep_unmapped:   # TODO: add to rule all, see how to use bowtie mapping rule differently each time
     input:
-        "sam_contaminations/{sample}.sam"
+        "../results/sam/contaminations/{sample}.sam"
     output:
-        "bam_contaminations/{sample}_unmapped.bam"
+        "../results/bam/contaminations/{sample}_unmapped.bam"
     conda:
         "../envs/env.yaml"
     threads: 4
     log:
-        "logs/samtools/{sample}_view_unmapped.log"
+        "../results/logs/samtools/contaminations/{sample}_unmapped.log"
     shell:
         "samtools view -b -f 4 {input} --threads {threads} > {output} 2> {log}"
 
 rule sam_to_fastq:
     input:
-        "bam_contaminations/{sample}_unmapped.bam"
+         "../results/bam/contaminations/{sample}_unmapped.bam"
     output:
-        fq1="screened_fastq/{sample}_screened_1.fq", fq2="screened_fastq/{sample}_screened_2.fq"
+        fq1="../results/fastq/decontaminated/{sample}_1.fq", fq2="../results/fastq/decontaminated/{sample}_2.fq"
     conda:
         "../envs/decontamination.smk"
     log:
-        "logs/bamtofq/{sample}.log"
+        "../results/logs/bamtofq/{sample}_decontaminated.log"
     shell:
         "bedtoold bamtofastq -i {input} -fq {output.fq1} -fq2 {output.fq2} 2> {log}"
