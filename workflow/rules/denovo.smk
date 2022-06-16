@@ -1,7 +1,7 @@
 def which_fq_1():
     r1=''
     if config['skip_trimming']=="True" and config["decontamination"]!="True":
-        r1 = lambda wildcards: samples.at[wildcards.sample, 'fq1']
+        r1 = (lambda wildcards: samples.at[wildcards.sample, 'fq1'])
     elif config["decontamination"]=='True':
         r1 = "../results/fastq/decontaminated/{sample}_1.fq"
     else:  # config['skip_trimming'] is false
@@ -12,7 +12,7 @@ def which_fq_1():
 def which_fq_2():
     r2 = ''
     if config['skip_trimming'] == "True" and config["decontamination"] != "True":
-        r2 = lambda wildcards: samples.at[wildcards.sample, 'fq2']
+        r2 = (lambda wildcards: samples.at[wildcards.sample, 'fq2'])
     elif config["decontamination"] == 'True':
         r2 = "../results/fastq/decontaminated/{sample}_2.fq"
     else:  # config['skip_trimming'] is false
@@ -22,15 +22,17 @@ def which_fq_2():
 
 rule spades:  # denovo assembly
     input:
-        r1=(lambda wildcards: samples.at[wildcards.sample, 'fq1']) if config[
-        "skip_trimming"]=='True' and config["decontamination"] != "True" else "../results/fastq/decontaminated/{sample}_1.fq"
-        if config["decontamination"] == "True" else "../results/fastq/trimmed/{sample}_1_P.fastq.gz",
-        r2=(lambda wildcards: samples.at[wildcards.sample, 'fq2']) if config[
-        "skip_trimming"]=='True' and config["decontamination"] != "True" else "../results/fastq/decontaminated/{sample}_2.fq"
-        if config["decontamination"] == "True" else "../results/fastq/trimmed/{sample}_2_P.fastq.gz"
-        # r1=which_fq_1(), r2=which_fq_2()
+        # r1=(lambda wildcards: samples.at[wildcards.sample, 'fq1']) if config[
+        # "skip_trimming"]=='True' and config["decontamination"] != "True" else "../results/fastq/decontaminated/{sample}_1.fq"
+        # if config["decontamination"] == "True" else "../results/fastq/trimmed/{sample}_1_P.fastq.gz",
+        # r2=(lambda wildcards: samples.at[wildcards.sample, 'fq2']) if config[
+        # "skip_trimming"]=='True' and config["decontamination"] != "True" else "../results/fastq/decontaminated/{sample}_2.fq"
+        # if config["decontamination"] == "True" else "../results/fastq/trimmed/{sample}_2_P.fastq.gz"
+        r1=which_fq_1(), r2=which_fq_2()
+        # r1="../resources/fastq/ERR4082859_1.fastq.gz", r2="../resources/fastq/ERR4082859_2.fastq.gz"
+
     output:
-        file="../results/denovo_assembly/{sample}/contigs.fasta"
+        "../results/denovo_assembly/{sample}/contigs.fasta"
     conda:
         "../envs/spades.yaml"
     log:

@@ -17,7 +17,7 @@ rule makeblastdb:
         "../results/logs/blastdb.log"
     shell:
         """
-        mkdir -p results/references/ && cp {input} ../results/references/references.fa
+        mkdir -p ../results/references/ && cp {input} ../results/references/references.fa
         makeblastdb -in ../results/references/references.fa -dbtype nucl -parse_seqids -logfile {log}
         """
         #note the ../ before results.
