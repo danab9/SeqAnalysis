@@ -1,6 +1,6 @@
 rule msa:
     input:
-        sequences = expand("../results/fasta/{sample}.fa", sample=IDS) # added "../results/" before each path 
+        sequences = expand("../results/fasta/{sample}.fa", sample=IDS) # added "../results/" before each path
     output:
         alignment = "../results/msa/alignment.fasta"
     log:
