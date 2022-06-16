@@ -1,4 +1,4 @@
-configfile : "config/config.yaml"
+configfile : "../config/config.yaml"
 import pandas as pd
 
 samples = pd.read_csv(config["samples"],index_col="sample", sep ='\t')
@@ -21,30 +21,30 @@ rule all:
         #"variability/variability.png",
         #"tree/tree.png",
         #"reference/artificial_reference_ERR4082860.fa",
-        expand("reference/artificial/{sample}.fa", sample=IDS),
-        expand("best_references/{sample}.fasta", sample=IDS),
-        "qc/multiqc_report.html" #als add
+        expand("../results/references/artificial/{sample}.fa", sample=IDS),
+        #expand("../results/references/best_references/{sample}.fasta", sample=IDS),
+        #"../report/qc/multiqc_report.html"
 
 
 
 
-rule rpk:
-    input: "stats/{sample}.stats"
-    output:
-        "stats/{sample}.stats_aug"
-    run:
-        with open(input[0]) as file:
-            with open(output[0],'w') as out:
-                for line in file:
-                    split_line = line.split("\t")
-                    length = int(split_line[1])
-                    mapped = int(split_line[2])
-                    if length != 0:
-                        rpk = (mapped / length) * 1000
-                    else:
-                        rpk = 0
-                    out.write(line.strip() + '\t' + str(rpk) + "\n")
-
-
+# rule rpk:
+#     input: "stats/{sample}.stats"
+#     output:
+#         "stats/{sample}.stats_aug"
+#     run:
+#         with open(input[0]) as file:
+#             with open(output[0],'w') as out:
+#                 for line in file:
+#                     split_line = line.split("\t")
+#                     length = int(split_line[1])
+#                     mapped = int(split_line[2])
+#                     if length != 0:
+#                         rpk = (mapped / length) * 1000
+#                     else:
+#                         rpk = 0
+#                     out.write(line.strip() + '\t' + str(rpk) + "\n")
+#
+#
 
 

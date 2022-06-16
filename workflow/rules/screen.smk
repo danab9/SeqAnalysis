@@ -55,18 +55,18 @@ rule keep_unmapped:   # TODO: add to rule all, see how to use bowtie mapping rul
     input:
         "../results/sam/contaminations/{sample}.sam"
     output:
-        "../results/bam/contaminations/{sample}_unmapped.bam"
+        "../results/bam/decontaminated/{sample}.bam"
     conda:
         "../envs/env.yaml"
     threads: 4
     log:
-        "../results/logs/samtools/contaminations/{sample}_unmapped.log"
+        "../results/logs/samtools/contaminations/{sample}_bam_unmapped.log"
     shell:
         "samtools view -b -f 4 {input} --threads {threads} > {output} 2> {log}"
 
 rule sam_to_fastq:
     input:
-         "../results/bam/contaminations/{sample}_unmapped.bam"
+         "../results/bam/decontaminated/{sample}.bam"
     output:
         fq1="../results/fastq/decontaminated/{sample}_1.fq", fq2="../results/fastq/decontaminated/{sample}_2.fq"
     conda:

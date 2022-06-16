@@ -94,7 +94,7 @@ rule artificialrefconsensus:
         best_reference = "../results/references/best_references/{sample}.fasta",
         bam_sorted = "../results/references/artificial/bam_sorted/{sample}.bam"
     output:
-        consensus = "../results/references/artificial/consensus/{sample}.fa"
+        consensus = "../results/references/artificial/{sample}.fa"
     log:
         "../results/logs/bcsf/{sample}.log"
     threads: 1
