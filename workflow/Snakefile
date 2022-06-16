@@ -21,16 +21,16 @@ rule all:
         #"variability/variability.png",
         #"tree/tree.png",
         #"reference/artificial_reference_ERR4082860.fa",
-        #expand("../results/references/artificial/{sample}.fa", sample=IDS),                #final one!
+        expand("../results/references/artificial/{sample}.fa", sample=IDS),                #final one!
         #expand("../results/references/best_references/{sample}.fasta", sample=IDS),
         #"../report/qc/multiqc_report.html"
         #"../results/sam/contaminations/ERR4082863.sam"
-        "../results/sam_contaminations/ERR4082860.sam",
+        #"../results/sam_contaminations/ERR4082860.sam",
         #"../results/references/contamination/contamination_reference.1.bt2"
         #"../results/sam/contaminations/ERR4082863.sam",
         # "../results/references/contamination/contamination_reference.1.bt2"
         #"../results/references/references.fa.nhr"
-        expand("../results/sam/contaminations/{sample}.sam", sample=IDS)
+        #expand("../results/sam/contaminations/{sample}.sam", sample=IDS)
 
 
 
