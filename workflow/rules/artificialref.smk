@@ -4,7 +4,7 @@ rule makeblastdb:
         config["references"]
     output:
         multiext(
-            "../results/references/references.fa",
+            "../results/references/references.fa", #with .fa!!, note for the other rules that references.fa.nhr will be created.
             ".nhr",
             ".nin",
             ".nog",
@@ -18,11 +18,10 @@ rule makeblastdb:
         "../results/logs/blastdb.log"
     shell:
         """
-        cp {input} results/references/references.fa
-        makeblastdb -in results/references/references.fa -dbtype nucl -parse_seqids -logfile {log}
-        
+        cp {input} ../results/references/references.fa
+        makeblastdb -in ../results/references/references.fa -dbtype nucl -parse_seqids -logfile {log}
         """
-
+        #cp might not work if the user does not have the folder references in results
 
 rule mapcontigs:
     input:
