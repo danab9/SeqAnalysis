@@ -35,18 +35,18 @@ rule bowtie_map_contaminations:
             ".rev.1.bt2",
             ".rev.2.bt2"),
         r1=(lambda wildcards: samples.at[wildcards.sample, 'fq1'])
-                if config["skip_trimming"]=='True' else "../results/fastq/trimmed/{sample}_1_P.fastq.gz", # ../resources/fastq/ERR4082860_1.fastq.gz
+                if config["skip_trimming"]=='True' else "../results/fastq/trimmed/{sample}_1_P.fastq.gz",
         r2=(lambda wildcards: samples.at[wildcards.sample, 'fq2'])
                 if config["skip_trimming"]=='True' else "../results/fastq/trimmed/{sample}_2_P.fastq.gz"
     output:
-        "../results/sam/contaminations/{sample}.sam"
+        "../results/sam_contaminations/{sample}.sam"
     log:
         "../results/logs/bowtie2/contamination_alignment/{sample}.log"
     threads: 6
     conda:
         "../envs/env.yaml"
     shell:
-        "bowtie2 -x {input.ref} -1 {input.r1} -2 {input.r2} -S {output} --threads {threads} &> {log}"
+        "bowtie2 -x ../results/references/contamination/contamination_reference -1 {input.r1} -2 {input.r2} -S {output} --threads {threads} &> {log}"
 
 # samtools
 rule keep_unmapped:   # TODO: add to rule all, see how to use bowtie mapping rule differently each time

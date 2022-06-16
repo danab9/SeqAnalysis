@@ -25,8 +25,8 @@ rule all:
         #expand("../results/references/best_references/{sample}.fasta", sample=IDS),
         #"../report/qc/multiqc_report.html"
         #"../results/sam/contaminations/ERR4082863.sam"
-        #"../results/sam/contaminations/ERR4082863.sam",
-        "../results/references/contamination/contamination_reference.1.bt2"
+        "../results/sam_contaminations/ERR4082860.sam",
+        #"../results/references/contamination/contamination_reference.1.bt2"
         #"../results/references/references.fa.nhr"
 
 
