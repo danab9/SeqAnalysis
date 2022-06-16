@@ -1,12 +1,9 @@
-# bowtie
-to_screen_ref=config["contamination_reference"]
-
 rule bowtie2_build_contamination:
     input:
         config["contamination_reference"]
     output:
         multiext(
-            config["contamination_reference"],
+            "../results/references/contamination/contamination_reference",
             ".1.bt2",
             ".2.bt2",
             ".3.bt2",
@@ -20,28 +17,29 @@ rule bowtie2_build_contamination:
     conda:
         "../envs/env.yaml"
     shell:
-        "bowtie2-build {input} --threads {threads} &> {log}"
+        """
+        mkdir -p results/references/contamination && cp {input} ../results/references/contamination/contamination_reference.fa
+        bowtie2-build {input} ../results/references/contamination/contamination_reference --threads {threads} &> {log}
+        """
+    # Error No output file specified!, to fix this I added {input} for a 2nd time
 
 rule bowtie_map_contaminations:
     input:
-        ref=to_screen_ref,
+        ref="../results/references/contamination/contamination_reference.fa",
         indexed_ref= multiext(
-            to_screen_ref,
+            "../results/references/contamination/contamination_reference",
             ".1.bt2",
             ".2.bt2",
             ".3.bt2",
             ".4.bt2",
             ".rev.1.bt2",
             ".rev.2.bt2"),
-        r1=(lambda wildcards: samples.at[wildcards.sample, 'fq1']) if config[
-                "skip_trimming"]=='True' else "../results/fastq/trimmed/{sample}_1_P.fastq.gz",
-        r2=(lambda wildcards: samples.at[wildcards.sample, 'fq2']) if config[
-                "skip_trimming"]=='True' else "../results/fastq/trimmed/{sample}_2_P.fastq.gz"  #"decontaminated/{sample}_2_P.fastq.gz" if config[decontamination] elseif .. else ..
+        r1=(lambda wildcards: samples.at[wildcards.sample, 'fq1'])
+                if config["skip_trimming"]=='True' else "../results/fastq/trimmed/{sample}_1_P.fastq.gz", # ../resources/fastq/ERR4082860_1.fastq.gz
+        r2=(lambda wildcards: samples.at[wildcards.sample, 'fq2'])
+                if config["skip_trimming"]=='True' else "../results/fastq/trimmed/{sample}_2_P.fastq.gz"
     output:
         "../results/sam/contaminations/{sample}.sam"
-    params:
-        local=config["bowtie2"]["local"],
-        ma=config["bowtie2"]["ma"]
     log:
         "../results/logs/bowtie2/contamination_alignment/{sample}.log"
     threads: 6
