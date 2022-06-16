@@ -1,10 +1,10 @@
 rule msa:
     input:
-        sequences = expand("fasta/{sample}.fa", sample=IDS),
+        sequences = expand("../results/fasta/{sample}.fa", sample=IDS) # added "../results/" before each path 
     output:
-        alignment = "msa/alignment.fasta"
+        alignment = "../results/msa/alignment.fasta"
     log:
-        "logs/msa/msa.log"
+        "../results/logs/msa/msa.log"
     threads: 6
     conda:
         "../envs/env.yaml"
@@ -13,11 +13,11 @@ rule msa:
 
 rule tree:
     input:
-        alignment = "msa/alignment.fasta"
+        alignment = "../results/msa/alignment.fasta"
     output:
-        tree = "tree/tree.nwk"
+        tree = "../results/tree/tree.nwk"
     log:
-        "logs/tree/tree.log"
+        "../results/logs/tree/tree.log"
     threads: 6
     params:
         method = config["tree"]["method"]
@@ -28,9 +28,9 @@ rule tree:
 
 rule treevisual:
     input:
-        tree = "tree/tree.nwk"
+        tree = "../results/tree/tree.nwk"
     output:
-        png = 'tree/tree.png'
+        png = '../results/tree/tree.png'
     conda:
         "../envs/env.yaml"
     threads: 1
@@ -40,14 +40,14 @@ rule treevisual:
 rule variability:
     #  Source: F. Francis, 2015, https://github.com/ffrancis/Multiple-sequence-alignment-Shannon-s-entropy/blob/master/msa_shannon_entropy012915.py !
     input:
-        alignment="msa/alignment.fasta"
+        alignment="../results/msa/alignment.fasta"
     params:
         l = config['variability']['l']
     output:
-        variability = "variability/variability.txt",
-        image = "variability/variability.png" #if image
+        variability = "../results/variability/variability.txt",
+        image = "../results/variability/variability.png" #if image
     log:
-        "logs/script/script.log"
+        "../results/logs/script/variability.log"
     threads: 1
     conda:
         "../envs/env.yaml"
