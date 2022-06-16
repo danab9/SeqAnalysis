@@ -26,8 +26,9 @@ rule all:
         #"../report/qc/multiqc_report.html"
         #"../results/sam/contaminations/ERR4082863.sam"
         #"../results/sam/contaminations/ERR4082863.sam",
-        "../results/references/contamination/contamination_reference.1.bt2"
+        # "../results/references/contamination/contamination_reference.1.bt2"
         #"../results/references/references.fa.nhr"
+        expand("../results/sam/contaminations/{sample}.sam", sample=IDS)
 
 
 

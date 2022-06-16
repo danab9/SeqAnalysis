@@ -18,7 +18,7 @@ rule bowtie2_build_contamination:
         "../envs/env.yaml"
     shell:
         """
-        mkdir -p results/references/contamination && cp {input} ../results/references/contamination/contamination_reference.fa
+        mkdir -p ../results/references/contamination && cp {input} ../results/references/contamination/contamination_reference.fa
         bowtie2-build {input} ../results/references/contamination/contamination_reference --threads {threads} &> {log}
         """
     # Error No output file specified!, to fix this I added {input} for a 2nd time
