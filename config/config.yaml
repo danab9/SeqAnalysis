@@ -3,7 +3,7 @@ samples: "../resources/samples.tsv"
 # directories
 references: "../resources/references/references.fa"
 kraken_db: "../resources/kraken_db"
-contamination_reference: "../resources/reference/flu.fa"
+contamination_reference: "../resources/references/flu.fa"
 
 
 # parameters:

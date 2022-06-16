@@ -21,30 +21,16 @@ rule all:
         #"variability/variability.png",
         #"tree/tree.png",
         #"reference/artificial_reference_ERR4082860.fa",
-        expand("../results/references/artificial/{sample}.fa", sample=IDS),
+        #expand("../results/references/artificial/{sample}.fa", sample=IDS),
         #expand("../results/references/best_references/{sample}.fasta", sample=IDS),
         #"../report/qc/multiqc_report.html"
+        #"../results/sam/contaminations/ERR4082863.sam"
+        #"../results/sam/contaminations/ERR4082863.sam"
+        "../results/references/references.fa.nhr"
 
 
 
 
-# rule rpk:
-#     input: "stats/{sample}.stats"
-#     output:
-#         "stats/{sample}.stats_aug"
-#     run:
-#         with open(input[0]) as file:
-#             with open(output[0],'w') as out:
-#                 for line in file:
-#                     split_line = line.split("\t")
-#                     length = int(split_line[1])
-#                     mapped = int(split_line[2])
-#                     if length != 0:
-#                         rpk = (mapped / length) * 1000
-#                     else:
-#                         rpk = 0
-#                     out.write(line.strip() + '\t' + str(rpk) + "\n")
-#
-#
+
 
 

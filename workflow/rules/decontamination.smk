@@ -14,7 +14,7 @@ rule kraken:
     params:
         kraken_db = config["kraken_db"], #Cannot use as input, because; The flag 'directory' used in rule screening is only valid for outputs, not inputs.
     conda:
-        "../envs/decontamination.yaml"
+        "envs/decontamination.yaml"
     shell:
         "kraken2 -db {params.kraken_db} --paired --classified-out ../results/fastq/kraken/{wildcards.sample}#.fq {input.r1} {input.r2} --report {output.report} --threads {threads} &> {log}"
 
@@ -24,7 +24,7 @@ rule screen: #creates a multiqc report of the screened reads in the folder qc/sc
     output:
         "report/kraken/multiqc_report.html"
     conda:
-        "../envs/multiqc.yaml"
+        "envs/multiqc.yaml"
     log:
         "../results/logs/multiqc/multiqc_kraken.log"
     threads: 1
@@ -32,3 +32,17 @@ rule screen: #creates a multiqc report of the screened reads in the folder qc/sc
         config["multiqcparam"]  # for example: -f parameter to ensure existing multiqc report is override.
     shell:
         "multiqc report/kraken {params} -o report/kraken &> {log}"
+
+
+
+# rule test:
+#     input:
+#         config["references"]
+#     output:
+#         "../results/test2.txt"
+#     conda:
+#         "../envs/blast.yaml" #because we should not use variables for environments
+#     log:
+#         "../results/logs/test.log"
+#     shell:
+#         "touch {output}"
