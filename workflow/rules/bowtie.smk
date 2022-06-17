@@ -1,28 +1,34 @@
 rule bowtie2_build:
     input:
-        "../results/references/artificial/{sample}.fa"
+        expand("../results/references/artificial/{sample}.fa", sample=IDS)
     output:
-        multiext(
-            "../results/references/artificial/{sample}",  # .fa?
-            ".1.bt2",
-            ".2.bt2",
-            ".3.bt2",
-            ".4.bt2",
-            ".rev.1.bt2",
-            ".rev.2.bt2",
-        )
+        # multiext(
+        #     "../results/references/artificial/{sample}",  #CHECK: add .fa?
+        #     ".1.bt2",
+        #     ".2.bt2",
+        #     ".3.bt2",
+        #     ".4.bt2",
+        #     ".rev.1.bt2",
+        #     ".rev.2.bt2",
+        # )
+        expand("../results/references/artificial/{sample}.1.bt2", sample=IDS),
+        expand("../results/references/artificial/{sample}.2.bt2", sample=IDS),
+        expand("../results/references/artificial/{sample}.3.bt2", sample=IDS),
+        expand("../results/references/artificial/{sample}.4.bt2", sample=IDS),
+        expand("../results/references/artificial/{sample}.rev.1.bt2", sample=IDS),
+        expand("../results/references/artificial/{sample}.rev.2.bt2", sample=IDS),
     log:
-        "../results/logs/bowtie2_build/build_{sample}.log"
+        expand("../results/logs/bowtie2_build/build_{sample}.log", sample=IDS)
     threads: 4
     conda:
         "../envs/env.yaml"
     shell:
-        "bowtie2-build {input} ../results/reference/artificial/consensus/{wildcards.sample} --threads {threads} &> {log}"
+        "bowtie2-build {input} ../results/reference/artificial/{wildcards.sample} --threads {threads} &> {log}" #CHECK: changed from Could not open index file for writing: "../results/reference/artificial/consensus/
 
 rule mapreads:
     input:
         indexed_ref = multiext(
-                "../results/references/artificial/{sample}",
+                "../results/references/artificial/{sample}", #CHECK: added .fa
                 ".1.bt2",
                 ".2.bt2",
                 ".3.bt2",
