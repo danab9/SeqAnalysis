@@ -2,25 +2,38 @@ r1 = lambda wildcards:samples.at[wildcards.sample, 'fq1']
 r2 = lambda wildcards:samples.at[wildcards.sample, 'fq2']
 
 
-rule temp:  # what's that?
-    input:
-        qc=expand("../report/qc/fastq/{sample}_fastqc.html", sample=all_fq),
-        trimmed_r1_p= expand("../results/trimmed/{myrthe}_1_P.fastq.gz", myrthe=IDS),
-        trimmed_qc=expand("../report/qc/trimmed/{sample}_{number}_{paired}_fastqc.html", sample=IDS, number=['1','2'], paired=['P','UP'])
+# rule temp:  # what's that?
+#     input:
+#         qc=expand("../report/qc/fastq/{sample}_fastqc.html", sample=all_fq),
+#         trimmed_r1_p= expand("../results/trimmed/{myrthe}_1_P.fastq.gz", myrthe=IDS),
+#         trimmed_qc=expand("../report/qc/trimmed/{sample}_{number}_{paired}_fastqc.html", sample=IDS, number=['1','2'], paired=['P','UP'])
+#
 
-
-rule fastqc:
+rule fastqc_untrimmed:
     input:
-        fq="{folder}/{sample}.fastq.gz"
+        fq="../resources/fastq/{sample}_{number}.fastq.gz"
     output:
-        html="../report/qc/{folder}/{sample}_fastqc.html",
-        zip="../report/qc/{folder}/{sample}_fastqc.zip"
+        html="../results/qc/fastq/{sample}_{number}_fastqc.html",
+        zip="../results/qc/fastq/{sample}_{number}_fastqc.zip"
     conda:
         "../envs/env.yaml"
     log:
-        "../results/logs/qc/{folder}/{sample}.log"
+        "../results/logs/qc/untrimmed/{sample}_{number}.log"
     shell:
-        "fastqc {input.fq} -o qc/{wildcards.folder} &> {log}"
+        "fastqc {input.fq} -o ../results/qc/fastq &> {log}"
+
+rule fastqc_trimmed:
+    input:
+        "../results/fastq/trimmed/{sample}_{number}_{paired}.fastq.gz"
+    output:
+        html="../results/qc/trimmed/{sample}_{number}_{paired}_fastqc.html",
+        zip="../results/qc/trimmed/{sample}_{number}_{paired}_fastqc.zip"
+    conda:
+        "../envs/env.yaml"
+    log:
+        "../results/logs/qc/trimmed/{sample}_{number}_{paired}.log"
+    shell:
+        "fastqc {input} -o ../results/qc/trimmed &> {log}"
 
 
 rule trimmomatic:
@@ -46,8 +59,8 @@ rule qualimap:
     input:
         "../results/bam/sorted/{sample}.bam"
     output:
-        dir=directory("../report/qc/qualimap/{sample}"),
-        file="../report/qc/qualimap/{sample}/qualimapReport.html"
+        dir=directory("../results/qc/qualimap/{sample}"),
+        file="../results/qc/qualimap/{sample}/qualimapReport.html"
     conda:
         "../envs/env.yaml"
     log:
@@ -58,13 +71,13 @@ rule qualimap:
 
 rule multiqc:
     input:
-        fqc=expand("../report/qc/fastq/{sample}_fastqc.html",sample=all_fq) if config["skip_trimming"] in['False',''] else [],
-        tqc=expand("../report/qc/trimmed/{sample}_{number}_{paired}_fastqc.html",sample=IDS,number=['1', '2'],paired=['P', 'UP'])
+        fqc=expand("../results/qc/fastq/{sample}_{number}_fastqc.html",sample=IDS,number=['1', '2']) if config["skip_trimming"] in['False',''] else [],
+        tqc=expand("../results/qc/trimmed/{sample}_{number}_{paired}_fastqc.html",sample=IDS,number=['1', '2'],paired=['P', 'UP'])
             if config['skip_fastQC'] in ['False',''] else [],
-        qualimap=expand("../report/qc/qualimap/{sample}/qualimapReport.html",sample=IDS) if config['skip_qualimap'] in
+        qualimap=expand("../results/qc/qualimap/{sample}/qualimapReport.html",sample=IDS) if config['skip_qualimap'] in
                                                                                   ['False',''] else []
     output:
-        "../report/qc/multiqc_report.html"
+        "../results/qc/multiqc_report.html"
     conda:
         "../envs/multiqc.yaml"
     log:

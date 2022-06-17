@@ -1,13 +1,13 @@
 rule samtobam:
     input:
-        expand("../results/sam/{sample}.sam", sample=IDS)
+        "../results/sam/{sample}.sam"
     output:
-        expand("../results/bam/{sample}.bam", sample=IDS)
+        "../results/bam/{sample}.bam"
     conda:
        "../envs/env.yaml"
     threads: 4
     log:
-        expand("../results/logs/samtools/{sample}_view.log", sample=IDS)
+        "../results/logs/samtools/{sample}_view.log"
     shell:
       "samtools view -b {input} --threads {threads} > {output} 2> {log}"
 

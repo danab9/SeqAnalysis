@@ -33,7 +33,7 @@ consenus:
 variability:
   l: 2 #Window length
 
-skip_trimming: 'True'
-skip_fastQC: 'True'
+skip_trimming: 'False'
+skip_fastQC: 'False'
 skip_qualimap: 'False'
 
