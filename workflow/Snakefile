@@ -25,7 +25,7 @@ rule all:
         #expand("../results/references_best_references/{sample}.fasta", sample=IDS),
         #expand("../results/blast/{sample}.tsv", sample=IDS),
         #expand("../results/denovo_assembly/{sample}/contigs.fasta", sample=IDS),
-        "../results/denovo_assembly/ERR4082859_1/contigs.fasta",
+        "../results/denovo_assembly/ERR4082859/contigs.fasta",
         "../results/fastq/decontaminated/ERR4082859_1.fq"
         #expand("../results/references/best_references/{sample}.fasta", sample=IDS),
         #"../report/qc/multiqc_report.html"
