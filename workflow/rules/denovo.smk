@@ -29,7 +29,7 @@ rule spades:  # denovo assembly
         # "skip_trimming"]=='True' and config["decontamination"] != "True" else "../results/fastq/decontaminated/{sample}_2.fq"
         # if config["decontamination"] == "True" else "../results/fastq/trimmed/{sample}_2_P.fastq.gz"
         r1=which_fq_1(), r2=which_fq_2()
-        # r1="../resources/fastq/ERR4082859_1.fastq.gz", r2="../resources/fastq/ERR4082859_2.fastq.gz"
+        #r1="../resources/fastq/ERR4082859_1.fastq.gz", r2="../resources/fastq/ERR4082859_2.fastq.gz"
 
     output:
         "../results/denovo_assembly/{sample}/contigs.fasta"

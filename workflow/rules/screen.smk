@@ -48,12 +48,11 @@ rule bowtie_map_contaminations:
     shell:
         "bowtie2 -x ../results/references/contamination/contamination_reference -1 {input.r1} -2 {input.r2} -S {output} --threads {threads} &> {log}"
 
-# samtools
 rule keep_unmapped:   # TODO: add to rule all, see how to use bowtie mapping rule differently each time
     input:
-        "../results/sam/contaminations/{sample}.sam"
+        "../results/sam_contaminations/{sample}.sam"
     output:
-        "../results/bam/decontaminated/{sample}.bam"
+        "../results/bam_decontaminated/{sample}.bam"
     conda:
         "../envs/env.yaml"
     threads: 4
@@ -64,12 +63,12 @@ rule keep_unmapped:   # TODO: add to rule all, see how to use bowtie mapping rul
 
 rule sam_to_fastq:
     input:
-         "../results/bam/decontaminated/{sample}.bam"
+         "../results/bam_decontaminated/{sample}.bam"
     output:
         fq1="../results/fastq/decontaminated/{sample}_1.fq", fq2="../results/fastq/decontaminated/{sample}_2.fq"
     conda:
-        "../envs/decontamination.smk"
+        "../envs/env.yaml"
     log:
         "../results/logs/bamtofq/{sample}_decontaminated.log"
     shell:
-        "bedtoold bamtofastq -i {input} -fq {output.fq1} -fq2 {output.fq2} 2> {log}"
+        "bedtools bamtofastq -i {input} -fq {output.fq1} -fq2 {output.fq2} 2> {log}"

@@ -50,7 +50,7 @@ rule best_reference:
         table = "../results/blast/{sample}.tsv",
         reference = "../results/references/references.fa"
     output:
-        "../results/references/best_references/{sample}.fasta"
+        "../results/references_best_references/{sample}.fasta" #changed this!
     conda:
         "../envs/artificialref.yaml"
     log:
