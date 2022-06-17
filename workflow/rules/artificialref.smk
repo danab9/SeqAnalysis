@@ -50,7 +50,7 @@ rule best_reference:
         table = "../results/blast/{sample}.tsv",
         reference = "../results/references/references.fa"
     output:
-        "../results/references_best_references/{sample}.fasta" #changed this!
+        "../results/references/best_references/{sample}.fasta" #changed this!
     conda:
         "../envs/artificialref.yaml"
     log:
@@ -59,7 +59,7 @@ rule best_reference:
         "python scripts/best_reference.py {input.table} {input.reference} {output} 2> {log}"
 
 
-rule artificialreference:
+rule artificial_reference:
     input: # contigs for the sample, and best reference for the sample
         best_reference = "../results/references/best_references/{sample}.fasta", # reference that was most similar to our sample.
         contigs = "../results/denovo_assembly/{sample}/contigs.fasta"
@@ -102,5 +102,5 @@ rule artificialrefconsensus:
         """
         bcftools mpileup -B -Ou -f {input.best_reference} {input.bam_sorted} | bcftools call -mv -M -Oz -o ../results/calls.vcf.gz 2> {log}
         bcftools index ../results/calls.vcf.gz -f 2> {log}
-        cat {input.best_reference} | bcftools consensus calls.vcf.gz > {output.consensus} 2> {log}
+        cat {input.best_reference} | bcftools consensus ../results/calls.vcf.gz > {output.consensus} 2> {log}
         """
