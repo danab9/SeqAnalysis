@@ -86,4 +86,4 @@ rule multiqc:
     params:
         config["multiqcparam"]  # for example: -f parameter to ensure existing multiqc report is override.
     shell:
-        "multiqc qc {params} -o qc &> {log}"
+        "multiqc ../results/qc {params} -o ../results/qc &> {log}" # 1 mistake that we did not submit

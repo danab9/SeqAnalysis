@@ -34,6 +34,7 @@ rule screen: #creates a multiqc report of the screened reads in the folder qc/sc
         "multiqc report/kraken {params} -o report/kraken &> {log}"
 
 
+#todo fix mpilup
 
 # rule test:
 #     input:
