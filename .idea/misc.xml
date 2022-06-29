@@ -5,12 +5,28 @@
     <option name="openedFilesInfos">
       <list>
         <OpenedFileInfo>
-          <option name="caretOffset" value="86" />
+          <option name="caretOffset" value="646" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/workflow/rules/decontamination.smk" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="2964" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/workflow/rules/qc.smk" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="95" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/config/config.yaml" />
         </OpenedFileInfo>
         <OpenedFileInfo>
-          <option name="caretOffset" value="259" />
+          <option name="caretOffset" value="663" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/workflow/Snakefile" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="423" />
           <option name="fileUrl" value="file://$PROJECT_DIR$/workflow/rules/artificialref.smk" />
+        </OpenedFileInfo>
+        <OpenedFileInfo>
+          <option name="caretOffset" value="819" />
+          <option name="fileUrl" value="file://$PROJECT_DIR$/workflow/rules/screen.smk" />
         </OpenedFileInfo>
       </list>
     </option>

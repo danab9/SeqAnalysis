@@ -1,13 +1,13 @@
 rule samtobam:
     input:
-        "../results/sam/{sample}.sam"
+        "results/sam/{sample}.sam"
     output:
-        "../results/bam/{sample}.bam"
+        "results/bam/{sample}.bam"
     conda:
        "../envs/env.yaml"
     threads: 4
     log:
-        "../results/logs/samtools/{sample}_view.log"
+        "results/logs/samtools/{sample}_view.log"
     shell:
       "samtools view -b {input} --threads {threads} > {output} 2> {log}"
 
@@ -15,11 +15,11 @@ rule samtobam:
 
 rule sort:
     input:
-        "../results/bam/{sample}.bam"
+        "results/bam/{sample}.bam"
     output:
-        "../results/bam/sorted/{sample}.bam"
+        "results/bam/sorted/{sample}.bam"
     log:
-        "../results/logs/samtools/{sample}_sort.log"
+        "results/logs/samtools/{sample}_sort.log"
     threads: 4
     conda:
         "../envs/env.yaml"
@@ -28,9 +28,9 @@ rule sort:
 
 rule index:
     input:
-        "../results/bam/sorted/{sample}.bam"
+        "results/bam/sorted/{sample}.bam"
     output:
-        "../results/bam/sorted/{sample}.bam.bai"
+        "results/bam/sorted/{sample}.bam.bai"
     conda:
         "../envs/env.yaml"
     shell:
@@ -38,13 +38,13 @@ rule index:
 
 rule mapstats:
     input:
-        sorted="../results/bam/sorted/{sample}.bam",
-        index="../results/bam/sorted/{sample}.bam.bai"
+        sorted="results/bam/sorted/{sample}.bam",
+        index="results/bam/sorted/{sample}.bam.bai"
     output:
-        "../results/stats/{sample}.stats"
+        "results/stats/{sample}.stats"
     threads: 4
     log:
-        "../results/log/samtools/{sample}_stats.log"  # added log file
+        "results/log/samtools/{sample}_stats.log"  # added log file
     conda:
         "../envs/env.yaml"
     shell:
@@ -53,16 +53,16 @@ rule mapstats:
 
 rule consenus:
     input:
-        bam="../results/bam/sorted/{sample}.bam",
-        index="../results/bam/sorted/{sample}.bam.bai"
+        bam="results/bam/sorted/{sample}.bam",
+        index="results/bam/sorted/{sample}.bam.bai"
     output:
-        "../results/fasta/{sample}.fa"   # "consensus" instead of "fasta/"?
+        "results/fasta/{sample}.fa"   # "consensus" instead of "fasta/"?
     threads: 1
     log:
-        "../results/logs/consenus/{sample}.log"
+        "results/logs/consenus/{sample}.log"
     conda:
         "../envs/samvar.yaml"
     params:
         q = config["consenus"]["q"]
     shell:
-        "samtools mpileup -aa -A -d 0 -Q 0 {input.bam} | ivar consensus -p ../results/fasta/{wildcards.sample} &> {log}"
+        "samtools mpileup -aa -A -d 0 -Q 0 {input.bam} 2> {log} | ivar consensus -p results/fasta/{wildcards.sample} -q {params.q} &> {log}"
