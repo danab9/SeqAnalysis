@@ -50,7 +50,7 @@ rule bowtie_map_contaminations:
     shell:
         "bowtie2 -x results/references/contamination/contamination_reference -1 {input.r1} -2 {input.r2} -S {output} --threads {threads} &> {log}"
 
-rule keep_unmapped:   # TODO: add to rule all, see how to use bowtie mapping rule differently each time
+rule keep_unmapped:   # TODO: see https://gist.github.com/darencard/72ddd9e6c08aaff5ff64ca512a04a6dd
     input:
         "results/sam_contaminations/{sample}.sam"
     output:

@@ -20,6 +20,7 @@ rule all:
     input:
         assembled_samples = expand("results/fasta/{sample}.fa",sample=IDS),
         multiqc_reports = "results/qc/multiqc_report.html",
+        trim = "results/bam_decontaminated/ERR4082859.bam"
 
 
 
