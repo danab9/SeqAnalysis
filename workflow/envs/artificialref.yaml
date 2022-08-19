@@ -1,12 +1,13 @@
-name: seqAnalysis
+name: artificialref
 channels:
   - defaults
   - bioconda
+  - anaconda
 dependencies:
-  - samtools
-  - bowtie2
-  - minimap2
-  - bcftools=1.9
-  - biopython
-  - pandas
-prefix: /Users/danabarilan/opt/miniconda3/envs/seqAnalysis
+  - samtools=1.15.1
+  - bowtie2=2.4.5
+  - minimap2=2.24
+  - bcftools=1.15.1
+  - biopython=1.79
+  - pandas=1.4.3
+

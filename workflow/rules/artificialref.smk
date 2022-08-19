@@ -1,9 +1,12 @@
+import os
+
+ref_name = "results/references/" + os.path.basename(config["references"]).split(".")[0]
 rule makeblastdb:
     input:
-        config["references"]
+        ref_path = config["references"]
     output:
         multiext(
-            "results/references/references.fa",
+            ref_name,
             ".nhr",
             ".nin",
             ".nog",
@@ -17,15 +20,14 @@ rule makeblastdb:
         "results/logs/blastdb.log"
     shell:
         """
-        mkdir -p results/references/ && cp {input} results/references/references.fa
-        makeblastdb -in results/references/references.fa -dbtype nucl -parse_seqids -logfile {log}
+        makeblastdb -in {input.ref_path} -out {ref_name} -dbtype nucl -parse_seqids -logfile {log}
         """
 
 rule mapcontigs:
     input:
         contigs = "results/denovo_assembly/{sample}/contigs.fasta",
         indexed_ref = multiext(
-            "results/references/references.fa",
+            ref_name,
             ".nhr",
             ".nin",
             ".nog",
@@ -41,21 +43,21 @@ rule mapcontigs:
     conda:
         "../envs/blast.yaml"
     shell:
-        "blastn -query {input.contigs} -db results/references/references.fa -outfmt 6 -out {output} -num_threads {threads} 2>{log}"
+        "blastn -query {input.contigs} -db {ref_name} -outfmt 6 -out {output} -num_threads {threads} 2>{log}"
 
 
 rule best_reference:
     input:
         table = "results/blast/{sample}.tsv",
-        reference = "results/references/references.fa"
+        reference = config["references"]
     output:
-        "results/references/best_references/{sample}.fasta" #changed this?
+        fasta = "results/references/best_references/{sample}.fasta"
     conda:
         "../envs/artificialref.yaml"
     log:
         "results/logs/best_references/{sample}.log"
-    shell:
-        "python scripts/best_reference.py {input.table} {input.reference} {output} 2> {log}"
+    script:
+        "../scripts/best_reference.py"
 
 
 rule artificial_reference:

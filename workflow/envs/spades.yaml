@@ -5,4 +5,3 @@ channels:
   - bioconda
 dependencies:
   - spades==3.15.4
-prefix: /home/mi/danab93/miniconda3/envs/spades_new

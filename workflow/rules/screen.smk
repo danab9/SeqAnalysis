@@ -18,16 +18,11 @@ rule bowtie2_build_contamination:
         "../envs/env.yaml"
     shell:
         """
-        mkdir -p results/references/contamination && cp {input} results/references/contamination/contamination_reference.fa
         bowtie2-build {input} results/references/contamination/contamination_reference --threads {threads} &> {log}
         """
-    # Error No output file specified!, to fix this I added {input} for a 2nd time
 
 rule bowtie_map_contaminations:
     input:
-        ref="results/references/contamination/contamination_reference.fa",
-        #@Sandro: It is true that we don't use the config defined directory here, but this dir is used in the build rule above,
-        # this rule copies the user defined file name to this new location, so that bowtie build can use it.
         indexed_ref= multiext(
             "results/references/contamination/contamination_reference",
             ".1.bt2",
@@ -50,7 +45,7 @@ rule bowtie_map_contaminations:
     shell:
         "bowtie2 -x results/references/contamination/contamination_reference -1 {input.r1} -2 {input.r2} -S {output} --threads {threads} &> {log}"
 
-rule keep_unmapped:   # TODO: see https://gist.github.com/darencard/72ddd9e6c08aaff5ff64ca512a04a6dd
+rule keep_unmapped: 
     input:
         "results/sam_contaminations/{sample}.sam"
     output:
@@ -61,7 +56,7 @@ rule keep_unmapped:   # TODO: see https://gist.github.com/darencard/72ddd9e6c08a
     log:
         "results/logs/samtools/contaminations/{sample}_bam_unmapped.log"
     shell:
-        "samtools view -b -f 4 {input} --threads {threads} > {output} 2> {log}"
+        "samtools view -b -f 12 {input} --threads {threads} > {output} 2> {log}"  # both reads are not mapped
 
 rule sam_to_fastq:
     input:
