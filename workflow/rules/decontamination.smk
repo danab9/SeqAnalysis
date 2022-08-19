@@ -7,7 +7,7 @@ rule kraken:
     output:
         clasified_reads_1 = "results/fastq/kraken/{sample}_1.fq",
         clasified_reads_2 = "results/fastq/kraken/{sample}_2.fq",
-        report = "report/kraken/{sample}.txt"
+        report = "results/kraken/reports/{sample}.txt"
     log:
         "results/logs/kraken/{sample}.log"
     threads: 10
@@ -20,9 +20,9 @@ rule kraken:
 
 rule screen: #creates a multiqc report of the screened reads in the folder qc/screened
     input:
-        screen = expand("report/kraken/{sample}.txt",sample=IDS),
+        screen = expand("results/kraken/reports/{sample}.txt",sample=IDS),
     output:
-        "report/kraken/multiqc_report.html"
+        "results/kraken/multiqc_report.html"
     conda:
         "../envs/multiqc.yaml"
     log:
@@ -31,5 +31,5 @@ rule screen: #creates a multiqc report of the screened reads in the folder qc/sc
     params:
         config["multiqcparam"]  # for example: -f parameter to ensure existing multiqc report is override.
     shell:
-        "multiqc report/kraken {params} -o report/kraken &> {log}"
+        "multiqc results/kraken {params} -o results/kraken &> {log}"
 
